@@ -28,3 +28,7 @@ sysinfo.txt
 # Builds
 *.apk
 *.unitypackage
+/Library/metadata/**
+/UnityGrannyWJA2016/Library/metadata/*/*
+/UnityGrannyWJA2016/Library/**
+UnityGrannyWJA2016/Library/**
