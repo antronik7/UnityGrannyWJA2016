@@ -30,4 +30,5 @@ sysinfo.txt
 *.unitypackage
 /Library/metadata/**
 /UnityGrannyWJA2016/Library/metadata/*/*
-/UnityGrannyWJA2016/Library/metadata/00/00000000000000002000000000000000
+/UnityGrannyWJA2016/Library/**
+UnityGrannyWJA2016/Library/**
