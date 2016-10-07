@@ -1,8 +1,4 @@
 sceneSetups:
-<<<<<<< HEAD
-- path: Assets/Scenes/Christian/MainChristian.unity
-=======
-- path: Assets/Scenes/Bombicusso/Bombicusso.unity
->>>>>>> 31e47c88dbafc892806b1b5042b5d4d4be9a0562
+- path: Assets/Scenes/Domo/Domo.unity
   isLoaded: 1
   isActive: 1
