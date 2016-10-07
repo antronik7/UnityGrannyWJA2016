@@ -29,6 +29,7 @@ sysinfo.txt
 *.apk
 *.unitypackage
 /Library/metadata/**
+!*.meta
 /UnityGrannyWJA2016/Library/metadata/*/*
 /UnityGrannyWJA2016/Library/**
 UnityGrannyWJA2016/Library/**
