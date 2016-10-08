@@ -8,13 +8,25 @@ public class PlayerController : MonoBehaviour {
 
     bool facingRight = true;
     GameObject objetPogner = null;
+    Animator monAnimator;
+
     // Use this for initialization
     void Start () {
-	
+        monAnimator = GetComponent<Animator>();
 	}
 	
 	// Update is called once per frame
 	void Update () {
+
+        if(Mathf.Abs(GetComponent<Rigidbody2D>().velocity.x) > 0 || Mathf.Abs(GetComponent<Rigidbody2D>().velocity.y) > 0)
+        {
+            monAnimator.SetBool("PersoBouge", true);
+        }
+        else
+        {
+            monAnimator.SetBool("PersoBouge", false);
+        }
+
         if(Input.GetButtonDown("Jump"))
         {
             float positionCircleCast;
@@ -32,6 +44,7 @@ public class PlayerController : MonoBehaviour {
 
             if (objetPogner != null)
             {
+                monAnimator.SetTrigger("Depose");
                 //Caller fonction domo
 
                 objetPogner.transform.position = new Vector3(transform.position.x + positionCircleCast, transform.position.y, 0);
@@ -42,11 +55,11 @@ public class PlayerController : MonoBehaviour {
             }
             else
             {
-                RaycastHit2D hit = Physics2D.CircleCast(originCircleCast, 0.2f, Vector2.right, 0.3F, myLayerMask);
+                RaycastHit2D hit = Physics2D.CircleCast(originCircleCast, 0.001f, Vector2.right, 0F, myLayerMask);
 
                 if (hit.collider != null)
                 {
-
+                    monAnimator.SetTrigger("Porte");
                     objetPogner = hit.collider.gameObject;
 
                     if (objetPogner.tag == "Animal")
