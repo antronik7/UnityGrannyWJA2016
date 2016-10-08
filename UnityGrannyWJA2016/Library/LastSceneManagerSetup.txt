@@ -1,4 +1,8 @@
 sceneSetups:
+<<<<<<< HEAD
 - path: Assets/Scenes/Domo/Domo.unity
+=======
+- path: Assets/Scenes/Christian/MainChristian.unity
+>>>>>>> 10bce5637fee60bd00d81c94354c46a950a0f69c
   isLoaded: 1
   isActive: 1
