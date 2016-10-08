@@ -3,6 +3,8 @@ using System.Collections;
 
 public class PlayerController : MonoBehaviour {
 
+    public GameObject Cooldown;
+
     public int SpeedPerso = 1;
     public LayerMask myLayerMask;
     public LayerMask myLayerMaskCage;
@@ -89,6 +91,9 @@ public class PlayerController : MonoBehaviour {
                             objetPogner = null;
 
                             //A CHANGER *********************************
+                            GameObject Moncanvas = Instantiate(Cooldown, hit.collider.transform.position, Quaternion.identity) as GameObject;
+                            Moncanvas.transform.parent = hit.collider.gameObject.transform;
+
                             objetPogner = Instantiate(cage);
                             objetPogner.transform.parent = transform;
                             objetPogner.GetComponent<BoxCollider2D>().enabled = false;
