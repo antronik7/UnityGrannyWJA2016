@@ -41,6 +41,8 @@ public abstract class Animal : MonoBehaviour {
         if (zone == 0)
         {
             GameManager.instance.playerTakeAnimalInSpawn();
+            gameObject.AddComponent<AI>();
+            gameObject.GetComponent<ComportementSpawn>().enabled = false;
         }
     }
 
