@@ -1,12 +1,12 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class Mouton : A_Herbivore {
+public class Crocodile : A_Carnivore {
 
 	// Use this for initialization
 	void Start () {
 
-        intialiseEntry("Sheep");
+        intialiseEntry("Crocodile");
 
     }
 	
