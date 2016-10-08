@@ -20,7 +20,6 @@ public class AI : MonoBehaviour {
 
 	void Start () {
         thisAnimal = GetComponent<Animal>();
-        thisAnimal.setId(); //TEMPORAIRE KJDBFOIUSBEGOIUBSGVIOBG
         boat = thisAnimal.transform.root;
         isActive = true;
         isEscaped = false;
