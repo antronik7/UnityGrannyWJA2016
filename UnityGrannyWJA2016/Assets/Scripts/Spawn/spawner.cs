@@ -31,7 +31,9 @@ public class spawner : MonoBehaviour {
     // Use this for initialization
     void Start () {
         setNewTimerToSpawn(minTimeBeforeSpawn, maxTimeBeforeSpawn);
-	}
+
+        file.GetComponent<FileAttente>().setId(typeOfSpawner);
+    }
 	
 	// Update is called once per frame
 	void Update () {
