@@ -1,8 +1,4 @@
-<<<<<<< HEAD
 sceneSetups:
-- path: Assets/Scenes/Mathieu/mainMathieu.unity
+- path: Assets/Scenes/Christian/testCopieAntoine.unity
   isLoaded: 1
   isActive: 1
-=======
-sceneSetups: []
->>>>>>> 88e4ba323e14ea00d41289b97226b17598e57810
