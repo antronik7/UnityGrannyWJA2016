@@ -200,10 +200,35 @@ public class CageController : MonoBehaviour {
 
     }
 
-    //FONCTION QUE DOMO VA CODER
+    //Fonction qui calcul combien une cage va donner de points
     public int calculateScore()
     {
-        return 1;
+        //Max de point si le joueur a 4 animaux identique
+        if(animalInCombo1.Count == 4 || animalInCombo2.Count == 4)
+        {
+            return 4;
+        }
+
+        //3 animaux identique et un random (3 points pour grifondore) 
+        if (animalInCombo1.Count == 3 || animalInCombo2.Count == 3)
+        {
+            return 3;
+        }
+
+        //Si 2 couple d'animaux different
+        if(animalInCombo1.Count == 2 && animalInCombo2.Count == 2)
+        {
+            return 2;
+        }
+
+        //Si 1 couple et 2 random
+        if(animalInCombo1.Count == 2 || animalInCombo2.Count == 2)
+        {
+            return 1;
+        }
+
+        //Un probleme
+        return -1;
     }
 
 
