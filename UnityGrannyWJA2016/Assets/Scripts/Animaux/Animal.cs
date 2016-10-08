@@ -1,8 +1,11 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+
+
 public abstract class Animal : MonoBehaviour {
 
+    public static int nbrAnimalSpwaned;
 
     [Tooltip("0 si Carnivore; 1 si Herbivore.")]
     protected bool type;
@@ -20,6 +23,8 @@ public abstract class Animal : MonoBehaviour {
     protected int color;
     [Tooltip("0 si dans le spawn; 1 si sur le bateau; 2 si dans une cage")]
     protected int zone;
+    [Tooltip("id de l'animal")]
+    [SerializeField] protected int id;
 
     public void setType(bool t) { type = t; }
     public void setName(string n) { name = n; }
@@ -29,6 +34,7 @@ public abstract class Animal : MonoBehaviour {
     public void setColor(int c) { color = c; }
     public void setgrabed(bool g) { grabed = g; }
     public void setZone(int z) { zone = z; }
+    public void setId() { id = nbrAnimalSpwaned++; }
 
     public bool getType() { return type; }
     public string getName() { return name; }
@@ -38,5 +44,5 @@ public abstract class Animal : MonoBehaviour {
     public int getColor() { return color; }
     public bool getgrabed() { return grabed; }
     public int getZone() { return zone; }
-
+    public int getId() { return id;}
 }
