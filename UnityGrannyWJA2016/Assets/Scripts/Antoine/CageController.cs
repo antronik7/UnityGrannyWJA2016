@@ -1,12 +1,23 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;       //Allows us to use Lists. 
+
 
 public class CageController : MonoBehaviour {
 
     public int couleurCage;
 
-	// Use this for initialization
-	void Start () {
+    [SerializeField] List<GameObject> animalNotInCombo = new List<GameObject>();
+
+    [SerializeField] List<GameObject> animalInCombo1 = new List<GameObject>();
+    [SerializeField] List<GameObject> animalInCombo2 = new List<GameObject>();
+
+    GameObject[] food;
+
+    [SerializeField] int nbrOfAnimalInCage = 0;
+
+    // Use this for initialization
+    void Start () {
 	
 	}
 	
@@ -14,4 +25,177 @@ public class CageController : MonoBehaviour {
 	void Update () {
 	
 	}
+
+    //Fonction applle par le joueur quand il set un ennemie dans la cage
+    public bool setAnimalInCage(GameObject animal)
+    {
+
+        if(!newAnimalIsInPair(animal))
+        {
+            if(!newAnimalIsInTrioOrQuad(animal))
+            {
+                animalNotInCombo.Add(animal);
+            }  
+        }
+
+        nbrOfAnimalInCage++;
+
+        return cageComplet();
+    }
+
+    //Fonction appelle par setAnimalInCage qui verifie si la cage est complete
+    bool cageComplet()
+    {
+        if (nbrOfAnimalInCage == 4)
+        {
+            if (animalInCombo1.Count > 1 || animalInCombo2.Count > 1)
+            {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    public bool newAnimalIsInPair(GameObject animal)
+    {
+        for (int i = 0; i < animalNotInCombo.Count; i++)
+        {
+            if (animalNotInCombo[i].GetComponent<Animal>().getName() == animal.GetComponent<Animal>().getName())
+            {
+                //Creer une nouvelle paire
+                if (animalInCombo1.Count < 1)
+                {
+                    animalInCombo1.Add(animal);
+                    animalInCombo1.Add(animalNotInCombo[i]);
+                }
+                else
+                {
+                    if (animalInCombo2.Count < 1)
+                    {
+                        animalInCombo2.Add(animal);
+                        animalInCombo2.Add(animalNotInCombo[i]);
+                    }
+                }
+
+                //Indiquer qu'ils sont en couple
+                animalNotInCombo[i].GetComponent<Animal>().setCouple(true);
+                animal.GetComponent<Animal>().setCouple(true);
+
+                //Enlever l'animal de la liste des animaux pas en combo
+                animalNotInCombo.RemoveAt(i);
+
+                return true;
+
+            }
+        }
+
+        return false;
+    }
+
+    public bool newAnimalIsInTrioOrQuad(GameObject animal)
+    {
+        bool animalInCombo = false;
+
+        //Pour trio ou 4 pareil
+        for (int i = 0; i < animalInCombo1.Count; i++)
+        {
+            if (animalInCombo1[i].GetComponent<Animal>().getName() == animal.GetComponent<Animal>().getName())
+            {
+                animalInCombo1.Add(animal);
+                animal.GetComponent<Animal>().setCouple(true);
+                return true;
+            }
+        }
+
+        if (!animalInCombo)
+        {
+            for (int i = 0; i < animalInCombo2.Count; i++)
+            {
+                if (animalInCombo2[i].GetComponent<Animal>().getName() == animal.GetComponent<Animal>().getName())
+                {
+                    animalInCombo2.Add(animal);
+                    animal.GetComponent<Animal>().setCouple(true);
+                    return true;
+                }
+            }
+        }
+
+        return false;
+    }
+
+    public int getNbrAnimalInCage()
+    {
+        return nbrOfAnimalInCage;
+    }
+
+    public void animalExitCage(GameObject animal)
+    {
+        int indexe = 0;
+        bool animalAlreadyRemoveFromCombo = false;
+
+
+        //Verifier si l'animal est dans un combo
+        if(animal.GetComponent<Animal>().getCouple() == true)
+        {
+            //Trouver dans quel combo il est 
+            for (int i = 0; i < animalInCombo1.Count; i++)
+            {
+                if (animalInCombo1[i].GetComponent<Animal>().getId() == animal.GetComponent<Animal>().getId())
+                {
+                    //Enlever l'animal du combo
+                    animalInCombo1[i].GetComponent<Animal>().setCouple(false);
+                    animalInCombo1.RemoveAt(i);
+
+                    //Verifier si le combo est scraper ou pas
+                    if (animalInCombo1.Count <= 1)
+                    {
+                        //Le combo n'existe pu
+                        animalNotInCombo.Add(animalInCombo1[0]);
+                        animalInCombo1[0].GetComponent<Animal>().setCouple(false);
+                        animalInCombo1.RemoveAt(0);
+                    }
+
+                    i = animalInCombo1.Count + 1;
+                    animalAlreadyRemoveFromCombo = true;
+                }
+            }
+
+            if (!animalAlreadyRemoveFromCombo)
+            {
+                for (int i = 0; i < animalInCombo2.Count; i++)
+                {
+                    if (animalInCombo2[i].GetComponent<Animal>().getId() == animal.GetComponent<Animal>().getId())
+                    {
+                        //Enlever l'animal du combo
+                        animalInCombo2[i].GetComponent<Animal>().setCouple(false);
+                        animalInCombo2.RemoveAt(i);
+
+                        //Verifier si le combo est scraper ou pas
+                        if (animalInCombo2.Count <= 1)
+                        {
+                            //Le combo n'existe pu
+                            animalNotInCombo.Add(animalInCombo2[0]);
+                            animalInCombo2[0].GetComponent<Animal>().setCouple(false);
+                            animalInCombo2.RemoveAt(0);
+                        }
+
+                        i = animalInCombo2.Count + 1;
+                    }
+                }
+            }
+        }
+        else
+        {
+            //Trouver l'indexe de l'animal qui est sortie
+            while (animal.GetComponent<Animal>().getId() != animalNotInCombo[indexe].GetComponent<Animal>().getId())
+            {
+                indexe++;
+            }
+
+            animalNotInCombo.RemoveAt(indexe);
+        }
+    }
+
+
 }
