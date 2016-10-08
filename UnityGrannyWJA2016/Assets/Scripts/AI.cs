@@ -22,7 +22,7 @@ public class AI : MonoBehaviour {
 
 	void Start () {
         thisAnimal = GetComponent<Animal>();
-        thisAnimal.setId(); //TEMPORAIRE KJDBFOIUSBEGOIUBSGVIOBG
+
         isActive = true;
         isEscaped = false;
         wantToEscape = false;
