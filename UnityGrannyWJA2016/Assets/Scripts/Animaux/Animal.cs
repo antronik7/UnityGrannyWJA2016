@@ -29,7 +29,7 @@ public abstract class Animal : MonoBehaviour {
     public void setType(bool t) { type = t; }
     public void setName(string n) { name = n; }
     public void setIsEating(bool i) { isEating = i; }
-    public void setCouple(bool c) { couple = c; }
+    
     public void setGoingOutChance(float g) { goingOutChance = g; }
     public void setColor(int c) { color = c; }
     public void setZone(int z) { zone = z; }
@@ -42,6 +42,20 @@ public abstract class Animal : MonoBehaviour {
         if (zone == 0)
         {
             GameManager.instance.playerTakeAnimalInSpawn();
+        }
+    }
+
+    public void setCouple(bool c)
+    {
+        couple = c;
+
+        if(c)
+        {
+            //Ajouter le coeur a l'animal
+        }
+        else
+        {
+            //Enlever le coueur
         }
     }
 
