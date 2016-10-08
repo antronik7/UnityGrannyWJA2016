@@ -10,27 +10,35 @@ public class AI : MonoBehaviour {
     public Animal[] animalList;
     private bool isActive,
                  isEscaped;
-    private enum states { drinking, wandering, chasing };
+    private enum states { drinking, wandering, chasing, beingCarried };
     private float moveSpeed;
     private int currentState;
     private GameObject prey;
+    private Transform boat;
     private Vector2 ancientDirection,
                     direction;
 
 	void Start () {
         thisAnimal = GetComponent<Animal>();
         thisAnimal.setId(); //TEMPORAIRE KJDBFOIUSBEGOIUBSGVIOBG
+        boat = thisAnimal.transform.root;
         isActive = true;
         isEscaped = false;
-        moveSpeed = 3f;
+        moveSpeed = 0.4f;
         currentState = (int)states.wandering;
-        ancientDirection = new Vector2(Random.Range(-1.0f, 1.0f), Random.Range(-1.0f, 1.0f));
-        direction = new Vector2(Random.Range(-1.0f, 1.0f), Random.Range(-1.0f, 1.0f));
+        Vector2 startDirection = new Vector2(Random.Range(-1.0f, 1.0f), Random.Range(-1.0f, 1.0f));
+        ancientDirection = startDirection;
+        direction = startDirection;
         StartCoroutine(AnimalStates());
 	}
 	
 	void Update () {
         animalList = transform.root.GetComponentsInChildren<Animal>();
+
+        if (currentState != (int)states.beingCarried && transform.parent.tag == "Player") {
+            Debug.Log("BLEBLEBLE");
+            currentState = (int)states.beingCarried;
+        }
 
         switch (currentState) {
             case (int)states.wandering:
@@ -68,6 +76,14 @@ public class AI : MonoBehaviour {
                 }
                     
                 break;
+
+            case (int)states.beingCarried:
+                if (transform.parent == null) {
+                    currentState = (int)states.wandering;
+                    transform.parent = boat.transform;
+                    Debug.Log("DROPPED!!");
+                } 
+                break;
         }
     }
 
@@ -100,7 +116,7 @@ public class AI : MonoBehaviour {
     }
 
     void OnCollisionEnter2D(Collision2D other) {
-        if (/*Random.Range(40, 45)*/ 42 == 42 && !isEscaped && other.gameObject.tag == "Porte") {
+        if (/*Random.Range(40, 45)*/ 42 == 42 && !isEscaped && !thisAnimal.getCouple() && other.gameObject.tag == "Porte") {
             StartCoroutine(AnimalEscape());
             return;
         }
@@ -109,6 +125,13 @@ public class AI : MonoBehaviour {
             ancientDirection.x *= -1;
         if(other.gameObject.name == "MurHaut" || other.gameObject.name == "MurBas")
             ancientDirection.y *= -1;
+    }
+
+    void OnTriggerStay2D(Collider2D other) {
+        if (other.name == "La cage" && isEscaped) {
+            transform.parent = other.gameObject.transform;
+            isEscaped = false;
+        }
     }
 
     IEnumerator AnimalStates() {

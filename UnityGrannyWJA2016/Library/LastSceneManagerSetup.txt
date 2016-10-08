@@ -1,4 +1,8 @@
 sceneSetups:
+<<<<<<< HEAD
 - path: Assets/Scenes/Antoine/MergeFeature.unity
+=======
+- path: Assets/Scenes/Christian/testCopieAntoine.unity
+>>>>>>> 46a0fbf94588467a7ce5ed6bf3039da61244213d
   isLoaded: 1
   isActive: 1
