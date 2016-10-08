@@ -8,7 +8,7 @@ public class A_Herbivore : Animal{
         goingOutChance = 1; //herbivore
         isEating = false;
         couple = false;
-        type = false;
+        type = true;
         grabed = false;
         zone = 0;
     }
