@@ -45,8 +45,13 @@ public class spawner : MonoBehaviour {
             //Instancier l'animal
             animalSpawner = (GameObject)(Instantiate(animals[randTemp], new Vector3(1000,1000,1000), Quaternion.identity));
 
+            //Associer le id a l'animal
+            animalSpawner.GetComponent<Animal>().setId();
+
             //Associer la couleur a l'animal spawner
             animalSpawner.GetComponent<Animal>().setColor(typeOfSpawner);
+
+            file.GetComponent<FileAttente>().spawnAnimal(animalSpawner);
 
             setNewTimerToSpawn(minTimeBeforeSpawn, maxTimeBeforeSpawn);
         }

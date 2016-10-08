@@ -3,19 +3,15 @@ using System.Collections;
 
 public class FileAttente : MonoBehaviour {
 
+    int animalCount = 0;
     const int maxNbrAnimals = 9;
-
-    [SerializeField]
-    GameObject lion;
 
     [SerializeField] GameObject[] arrPosition;//array de positions 0 = debut et lengt = fin
     GameObject[] arrAnimals;//array d'animaux 0 = debut et lengt = fin
 
 	// Use this for initialization
-	void Start () {
-
+	void Start () { 
         arrAnimals = new GameObject[maxNbrAnimals]; //initialisation array animals
-        spawnAnimal();
 	}
 	
 	// Update is called once per frame
@@ -46,17 +42,36 @@ public class FileAttente : MonoBehaviour {
         }
     }
 
-    public void spawnAnimal()
+    public void spawnAnimal(GameObject animal)
     {
-        if(arrPosition[maxNbrAnimals-1].GetComponent<PositionFile>().getIsOccupied())//si la file est pleine
+        if(maxNbrAnimals == animalCount)//si la file est pleine
         {
-
+            //DAMAIGE
+            Debug.Log("DAT MAGE");
         }
         else//sinon
         {
-            arrPosition[0].GetComponent<PositionFile>().setIsOccupied(true);//ajouter le nouvel animal
-            arrAnimals[0] = (GameObject)Instantiate(lion, arrPosition[0].transform.position, Quaternion.identity);//TEMP
-            //arrAnimals[maxNbrAnimals - 1] = ; CALLER LA FONCTION A DOMO
+            //ajouter le nouvel animal
+            animalCount++;
+            arrAnimals[0] = animal;
+            arrAnimals[0].transform.position = arrPosition[0].transform.position;
+            arrPosition[0].GetComponent<PositionFile>().setIsOccupied(true);
+        }
+    }
+
+    public void takeAnimal()
+    {
+        //enlever un animal quand NOE YER GAY
+        if (animalCount > 0 && arrPosition[maxNbrAnimals - 1].GetComponent<PositionFile>().getIsOccupied())
+        {
+            Destroy(arrAnimals[maxNbrAnimals - 1]);
+            arrAnimals[maxNbrAnimals - 1] = null;
+            animalCount--;
+            arrPosition[maxNbrAnimals - 1].GetComponent<PositionFile>().setIsOccupied(false);
+        }
+        else
+        {
+            Debug.Log("TU PEUX PAS TABARNAK YA PERSONNE ICITTE");
         }
     }
 }
