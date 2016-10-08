@@ -1,8 +1,4 @@
 sceneSetups:
-<<<<<<< HEAD
 - path: Assets/Scenes/Mathieu/mainMathieu.unity
-=======
-- path: Assets/Scenes/Antoine/MainAntoine.unity
->>>>>>> 8ec8bf6203593e4fbb95839f7c84bdb2d791894c
   isLoaded: 1
   isActive: 1
