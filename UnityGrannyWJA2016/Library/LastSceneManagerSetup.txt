@@ -1,8 +1,4 @@
-<<<<<<< HEAD
-sceneSetups: []
-=======
 sceneSetups:
 - path: Assets/Scenes/Antoine/MergeFeature.unity
   isLoaded: 1
   isActive: 1
->>>>>>> 21b757f277a0e9425e50b5becebad7376090aafe
