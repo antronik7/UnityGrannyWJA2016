@@ -5,6 +5,7 @@ public class PlayerController : MonoBehaviour {
 
     public int SpeedPerso = 1;
     public LayerMask myLayerMask;
+    public LayerMask myLayerMaskCage;
 
     bool facingRight = true;
     GameObject objetPogner = null;
@@ -44,18 +45,41 @@ public class PlayerController : MonoBehaviour {
 
             if (objetPogner != null)
             {
-                monAnimator.SetTrigger("Depose");
-                //Caller fonction domo
+                RaycastHit2D hit = Physics2D.CircleCast(originCircleCast, 0.0005f, Vector2.right, 0F, myLayerMaskCage);
 
-                objetPogner.transform.position = new Vector3(transform.position.x + positionCircleCast, transform.position.y, 0);
-                objetPogner.GetComponent<BoxCollider2D>().enabled = true;
-                objetPogner.transform.parent = null;
+                if (hit.collider != null)
+                {
+                    //A CHANGER *********************************
+                    if(hit.collider.gameObject.GetComponent<CageController>().couleurCage == 1)
+                    {
+                        monAnimator.SetTrigger("Depose");
 
-                objetPogner = null;
+                        //Caller fonction domo
+
+                        objetPogner.transform.position = new Vector3(transform.position.x + positionCircleCast, transform.position.y, 0);
+                        objetPogner.GetComponent<BoxCollider2D>().enabled = true;
+                        objetPogner.transform.parent = null;
+
+                        objetPogner = null;
+                    }
+                }
+                else
+                {
+                    monAnimator.SetTrigger("Depose");
+
+                    //Caller fonction domo
+
+                    objetPogner.transform.position = new Vector3(transform.position.x + positionCircleCast, transform.position.y, 0);
+                    objetPogner.GetComponent<BoxCollider2D>().enabled = true;
+                    objetPogner.transform.parent = null;
+
+                    objetPogner = null;
+                }
+                
             }
             else
             {
-                RaycastHit2D hit = Physics2D.CircleCast(originCircleCast, 0.001f, Vector2.right, 0F, myLayerMask);
+                RaycastHit2D hit = Physics2D.CircleCast(originCircleCast, 0.0005f, Vector2.right, 0F, myLayerMask);
 
                 if (hit.collider != null)
                 {
