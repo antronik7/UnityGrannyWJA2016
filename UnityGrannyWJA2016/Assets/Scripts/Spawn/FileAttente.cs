@@ -5,6 +5,8 @@ public class FileAttente : MonoBehaviour {
 
     int animalCount = 0;
     const int maxNbrAnimals = 9;
+    int idSpawn;
+
 
     [SerializeField] GameObject[] arrPosition;//array de positions 0 = debut et lengt = fin
     GameObject[] arrAnimals;//array d'animaux 0 = debut et lengt = fin
@@ -73,5 +75,21 @@ public class FileAttente : MonoBehaviour {
         {
             Debug.Log("TU PEUX PAS TABARNAK YA PERSONNE ICITTE");
         }
+    }
+
+    void OnTriggerEnter(Collider other)
+    {
+        GameManager.instance.setSpawnActive(idSpawn);
+    }
+
+    void OnTriggerExit(Collider other)
+    {
+        GameManager.instance.deSetSpawnActive();
+    }
+
+    //Fonction appler dans le start d'un spawner pour lui setter son id
+    public void setId(int id)
+    {
+        idSpawn = id;
     }
 }
