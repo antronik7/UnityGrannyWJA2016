@@ -1,8 +1,4 @@
-<<<<<<< HEAD
 sceneSetups:
 - path: Assets/Scenes/Domo/Domo.unity
   isLoaded: 1
   isActive: 1
-=======
-sceneSetups: []
->>>>>>> cce6e8910298ddcf1b4b8bf87fa7dc5eeb01e2f1

@@ -6,7 +6,7 @@ public class Mouton : A_Herbivore {
 	// Use this for initialization
 	void Start () {
 
-        intialiseEntry("Mouton");
+        intialiseEntry("Sheep");
 
     }
 	
