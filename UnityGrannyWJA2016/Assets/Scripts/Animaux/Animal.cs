@@ -16,11 +16,10 @@ public abstract class Animal : MonoBehaviour {
     protected float goingOutChance;
     [Tooltip("1 si le joueur tien l'animal dans ces bras.")]
     protected bool grabed;
-    [Tooltip("0 = rouge, 1 = jaune, 2 = bleu.")]
+    [Tooltip("0 = Mauve, 1 = Orange, 2 = Vert.")]
     protected int color;
     [Tooltip("0 si dans le spawn; 1 si sur le bateau; 2 si dans une cage")]
     protected int zone;
-
 
     public void setType(bool t) { type = t; }
     public void setName(string n) { name = n; }
