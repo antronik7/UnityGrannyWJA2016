@@ -195,6 +195,15 @@ public class CageController : MonoBehaviour {
 
             animalNotInCombo.RemoveAt(indexe);
         }
+
+        nbrOfAnimalInCage--;
+
+    }
+
+    //FONCTION QUE DOMO VA CODER
+    public int calculateScore()
+    {
+        return 1;
     }
 
 
