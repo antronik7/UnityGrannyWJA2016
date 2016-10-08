@@ -32,9 +32,19 @@ public abstract class Animal : MonoBehaviour {
     public void setCouple(bool c) { couple = c; }
     public void setGoingOutChance(float g) { goingOutChance = g; }
     public void setColor(int c) { color = c; }
-    public void setgrabed(bool g) { grabed = g; }
     public void setZone(int z) { zone = z; }
     public void setId() { id = nbrAnimalSpwaned++; }
+    public void setgrabed(bool g)
+    {
+        grabed = g;
+
+        //Si l'animal etait dans le spawn
+        if (zone == 0)
+        {
+            GameManager.instance.playerTakeAnimalInSpawn();
+        }
+    }
+
 
     public bool getType() { return type; }
     public string getName() { return name; }
