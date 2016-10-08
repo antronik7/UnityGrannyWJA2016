@@ -1,18 +1,2 @@
 Base path: C:/Program Files/Unity/Editor/Data
 Cmd: getPlatforms
-<<<<<<< HEAD
-=======
-<<<<<<< HEAD
-=======
-<<<<<<< HEAD
-=======
-<<<<<<< HEAD
-=======
-Cmd: compileSnippet
-  api=4 type=0 insize=1458 outsize=666 kw= pd=UNITY_ENABLE_REFLECTION_BUFFERS UNITY_PBS_USE_BRDF1 UNITY_SPECCUBE_BOX_PROJECTION UNITY_SPECCUBE_BLENDING ok=1
-Cmd: compileSnippet
-  api=4 type=1 insize=1458 outsize=666 kw= pd=UNITY_ENABLE_REFLECTION_BUFFERS UNITY_PBS_USE_BRDF1 UNITY_SPECCUBE_BOX_PROJECTION UNITY_SPECCUBE_BLENDING ok=1
->>>>>>> 8ec8bf6203593e4fbb95839f7c84bdb2d791894c
->>>>>>> 2b0f8c4bc58e677bdb0f0375a92ecc607facef0b
->>>>>>> 8d7de7e596a98a1bcb1c555aaf1c88a2a9d6f1dd
->>>>>>> 2ef652fdb553df787b78ab9ca84a6f7218ad2ef3

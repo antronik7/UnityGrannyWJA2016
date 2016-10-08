@@ -5,7 +5,7 @@ public class FileAttente : MonoBehaviour {
 
     int animalCount = 0;
     const int maxNbrAnimals = 9;
-    int idSpawn;
+    [SerializeField] int idSpawn;
 
 
     [SerializeField] GameObject[] arrPosition;//array de positions 0 = debut et lengt = fin
@@ -66,7 +66,6 @@ public class FileAttente : MonoBehaviour {
         //enlever un animal quand NOE YER GAY
         if (animalCount > 0 && arrPosition[maxNbrAnimals - 1].GetComponent<PositionFile>().getIsOccupied())
         {
-            Destroy(arrAnimals[maxNbrAnimals - 1]);
             arrAnimals[maxNbrAnimals - 1] = null;
             animalCount--;
             arrPosition[maxNbrAnimals - 1].GetComponent<PositionFile>().setIsOccupied(false);
@@ -77,14 +76,20 @@ public class FileAttente : MonoBehaviour {
         }
     }
 
-    void OnTriggerEnter(Collider other)
+    void OnTriggerEnter2D(Collider2D other)
     {
-        GameManager.instance.setSpawnActive(idSpawn);
+        if(other.gameObject.tag == "Player")
+        {
+            GameManager.instance.setSpawnActive(idSpawn);
+        }
     }
 
-    void OnTriggerExit(Collider other)
+    void OnTriggerExit2D(Collider2D other)
     {
-        GameManager.instance.deSetSpawnActive();
+        if (other.gameObject.tag == "Player")
+        {
+            GameManager.instance.deSetSpawnActive();
+        }
     }
 
     //Fonction appler dans le start d'un spawner pour lui setter son id

@@ -6,7 +6,6 @@ using System.Collections;
 public abstract class Animal : MonoBehaviour {
 
     public static int nbrAnimalSpwaned;
-
     [Tooltip("0 si Carnivore; 1 si Herbivore.")]
     protected bool type;
     [Tooltip("Le nom de la classe de l'animal. Ex: Lion.")]
