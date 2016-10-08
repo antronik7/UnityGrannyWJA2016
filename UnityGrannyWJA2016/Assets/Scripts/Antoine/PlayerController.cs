@@ -3,9 +3,13 @@ using System.Collections;
 
 public class PlayerController : MonoBehaviour {
 
+    public GameObject Cooldown;
+
     public int SpeedPerso = 1;
     public LayerMask myLayerMask;
     public LayerMask myLayerMaskCage;
+    public LayerMask myLayerMaskEntrepot;
+    public GameObject cage;
 
     bool facingRight = true;
     GameObject objetPogner = null;
@@ -43,14 +47,61 @@ public class PlayerController : MonoBehaviour {
 
             Vector2 originCircleCast = new Vector2(transform.position.x + positionCircleCast, transform.position.y);
 
+
+
+
             if (objetPogner != null)
             {
-                RaycastHit2D hit = Physics2D.CircleCast(originCircleCast, 0.0005f, Vector2.right, 0F, myLayerMaskCage);
-
-                if (hit.collider != null)
+                if(objetPogner.tag == "Cage")
                 {
-                    //A CHANGER *********************************
-                    if(hit.collider.gameObject.GetComponent<CageController>().couleurCage == 1)
+                    RaycastHit2D hit = Physics2D.CircleCast(originCircleCast, 0.0005f, Vector2.right, 0F, myLayerMaskEntrepot);
+
+                    if (hit.collider != null)
+                    {
+                        monAnimator.SetTrigger("Depose");
+
+                        //Caller fonction domo
+
+                        objetPogner.transform.position = new Vector3(transform.position.x + positionCircleCast, transform.position.y, 0);
+                        objetPogner.GetComponent<BoxCollider2D>().enabled = true;
+                        objetPogner.transform.parent = null;
+
+                        //AjouterScore
+                        Destroy(objetPogner);
+                        objetPogner = null;
+                    }
+                }
+                else
+                {
+                    RaycastHit2D hit = Physics2D.CircleCast(originCircleCast, 0.0005f, Vector2.right, 0F, myLayerMaskCage);
+
+                    if (hit.collider != null)
+                    {
+                        //A CHANGER *********************************
+                        if (hit.collider.gameObject.GetComponent<CageController>().couleurCage == 1)
+                        {
+                            monAnimator.SetTrigger("Depose");
+
+                            //Caller fonction domo
+
+                            objetPogner.transform.position = new Vector3(transform.position.x + positionCircleCast, transform.position.y, 0);
+                            objetPogner.GetComponent<BoxCollider2D>().enabled = true;
+                            objetPogner.transform.parent = null;
+
+                            objetPogner = null;
+
+                            //A CHANGER *********************************
+                            GameObject Moncanvas = Instantiate(Cooldown, hit.collider.transform.position, Quaternion.identity) as GameObject;
+                            Moncanvas.transform.parent = hit.collider.gameObject.transform;
+
+                            objetPogner = Instantiate(cage);
+                            objetPogner.transform.parent = transform;
+                            objetPogner.GetComponent<BoxCollider2D>().enabled = false;
+                            objetPogner.transform.position = new Vector3(transform.position.x, transform.position.y + 0.2f, 0);
+                            Debug.Log("allo");
+                        }
+                    }
+                    else
                     {
                         monAnimator.SetTrigger("Depose");
 
@@ -63,19 +114,6 @@ public class PlayerController : MonoBehaviour {
                         objetPogner = null;
                     }
                 }
-                else
-                {
-                    monAnimator.SetTrigger("Depose");
-
-                    //Caller fonction domo
-
-                    objetPogner.transform.position = new Vector3(transform.position.x + positionCircleCast, transform.position.y, 0);
-                    objetPogner.GetComponent<BoxCollider2D>().enabled = true;
-                    objetPogner.transform.parent = null;
-
-                    objetPogner = null;
-                }
-                
             }
             else
             {
@@ -86,12 +124,13 @@ public class PlayerController : MonoBehaviour {
                     monAnimator.SetTrigger("Porte");
                     objetPogner = hit.collider.gameObject;
 
-                    if (objetPogner.tag == "Animal")
+                    if (objetPogner.tag == "Animal" || objetPogner.tag == "Cage")
                     {
                         //Caller fonction domo
                         objetPogner.transform.parent = transform;
                         objetPogner.GetComponent<BoxCollider2D>().enabled = false;
                         objetPogner.transform.position = new Vector3(transform.position.x, transform.position.y + 0.2f, 0);
+                        
                     }
                 }
             }
@@ -110,7 +149,7 @@ public class PlayerController : MonoBehaviour {
 
         if(objetPogner != null)
         {
-            Debug.Log("allo");
+            
             objetPogner.GetComponent<Rigidbody2D>().velocity = vectorDirection * SpeedPerso;
         }
 

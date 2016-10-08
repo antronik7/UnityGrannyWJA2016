@@ -3,4 +3,20 @@ StandaloneWindows
 C:/Program Files/Unity/Editor/Data/Managed/UnityEngine.dll
 C:/Program Files/Unity/Editor/Data/UnityExtensions/Unity/GUISystem/UnityEngine.UI.dll
 C:/Program Files/Unity/Editor/Data/UnityExtensions/Unity/Networking/UnityEngine.Networking.dll
+<<<<<<< HEAD
 C:/Program Files/Unity/Editor/Data/Managed/UnityEditor.dll
+=======
+<<<<<<< HEAD
+C:/Program Files/Unity/Editor/Data/Managed/UnityEditor.dll
+=======
+C:/Program Files/Unity/Editor/Data/Managed/UnityEditor.dll
+C:/Program Files/Unity/Editor/Data\Managed/Mono.Cecil.dll
+C:/Program Files/Unity/Editor/Data/PlaybackEngines/iOSSupport\UnityEditor.iOS.Extensions.Xcode.dll
+<<<<<<< HEAD
+C:/Program Files/Unity/Editor/Data/PlaybackEngines/iOSSupport\UnityEditor.iOS.Extensions.Common.dll
+=======
+C:/Program Files/Unity/Editor/Data/PlaybackEngines/iOSSupport\UnityEditor.iOS.Extensions.Common.dll
+>>>>>>> 8ec8bf6203593e4fbb95839f7c84bdb2d791894c
+>>>>>>> 2b0f8c4bc58e677bdb0f0375a92ecc607facef0b
+>>>>>>> 8d7de7e596a98a1bcb1c555aaf1c88a2a9d6f1dd
+>>>>>>> 2ef652fdb553df787b78ab9ca84a6f7218ad2ef3
