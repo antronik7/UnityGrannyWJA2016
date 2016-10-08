@@ -19,7 +19,7 @@ public class AI : MonoBehaviour {
 
 	void Start () {
         thisAnimal = GetComponent<Animal>();
-        //thisAnimal.setId(); //TEMPORAIRE KJDBFOIUSBEGOIUBSGVIOBG
+        thisAnimal.setId(); //TEMPORAIRE KJDBFOIUSBEGOIUBSGVIOBG
         isActive = true;
         isEscaped = false;
         moveSpeed = 3f;
@@ -52,17 +52,21 @@ public class AI : MonoBehaviour {
 
             case (int)states.chasing:
                 float distancePrey = GetDistance(prey.transform);
-                if (distancePrey < 1) {
+                if (distancePrey < 1.5f) {
                     currentState = (int)states.wandering;
                     Destroy(prey.gameObject);
+                    prey = null;
                 }
                 else if (distancePrey < 10) {
                     direction = Seek(prey.transform.position);
                     transform.Translate(direction * moveSpeed * Time.deltaTime);
                     ancientDirection = direction;
                 }
-                else
+                else {
                     currentState = (int)states.wandering;
+                    prey = null;
+                }
+                    
                 break;
         }
     }
@@ -95,14 +99,16 @@ public class AI : MonoBehaviour {
         return Mathf.Sqrt(Mathf.Pow(other.position.x - transform.position.x, 2) + Mathf.Pow(other.position.y - transform.position.y, 2));
     }
 
-    void OnTriggerEnter2D(Collider2D other) {
-        if (/*Random.Range(40, 45)*/ 42 == 42 && !isEscaped && other.tag == "Porte") {
-            Debug.Log("Fuck off i'm out " + thisAnimal.getId());
-            isEscaped = true;
+    void OnCollisionEnter2D(Collision2D other) {
+        if (/*Random.Range(40, 45)*/ 42 == 42 && !isEscaped && other.gameObject.tag == "Porte") {
+            StartCoroutine(AnimalEscape());
             return;
         }
-        ancientDirection.x *= -1;
-        ancientDirection.y *= -1;
+
+        if(other.gameObject.name == "MurGauche" || other.gameObject.name == "MurDroite")
+            ancientDirection.x *= -1;
+        if(other.gameObject.name == "MurHaut" || other.gameObject.name == "MurBas")
+            ancientDirection.y *= -1;
     }
 
     IEnumerator AnimalStates() {
@@ -115,5 +121,14 @@ public class AI : MonoBehaviour {
                 currentState = (int)states.wandering;
             }
         }
+    }
+
+    IEnumerator AnimalEscape() {
+        thisAnimal.GetComponent<BoxCollider2D>().enabled = false;
+        Debug.Log("Fuck off i'm out " + thisAnimal.getId());
+        yield return new WaitForSeconds(1f);
+        thisAnimal.transform.parent = transform.root;
+        thisAnimal.GetComponent<BoxCollider2D>().enabled = true;
+        isEscaped = true;
     }
 }
