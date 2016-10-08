@@ -1,13 +1,4 @@
-<<<<<<< HEAD
 sceneSetups:
 - path: Assets/Scenes/Mathieu/mainMathieu.unity
-=======
-<<<<<<< HEAD
-sceneSetups: []
-=======
-sceneSetups:
-- path: Assets/Scenes/Antoine/MergeFeature.unity
->>>>>>> 9410be5c82691557627483ee491c3d8562b29370
   isLoaded: 1
   isActive: 1
->>>>>>> 21b757f277a0e9425e50b5becebad7376090aafe

@@ -7,16 +7,18 @@ public class AI : MonoBehaviour {
     private const float DRINK_TIME = 2f;
 
     private Animal thisAnimal;
-    private Animal[] animalList;
-    private bool isActive,
+    public Animal[] animalList;
+    public bool isActive,
                  isEscaped,
                  wantToEscape;
     private enum states { inCage, drinking, wandering, chasing, beingCarried };
     private GameObject cageDoor,
                        prey;
-    private float moveSpeed; //faster when chasing
-    private int currentState;
-    private Transform boat;
+    private float moveSpeed;
+    public int currentState,
+               previousState;
+    private Transform boat,
+                      player;
     private Vector2 ancientDirection,
                     direction;
 
@@ -24,16 +26,13 @@ public class AI : MonoBehaviour {
         thisAnimal = GetComponent<Animal>();
 
         isActive = true;
-        isEscaped = false;
+        isEscaped = true;
         wantToEscape = false;
-
-        foreach (BoxCollider2D g in transform.parent.GetComponentsInChildren<BoxCollider2D>())
-            if (g.tag == "Porte")
-                cageDoor = g.gameObject;
 
         moveSpeed = 0.4f;
         currentState = (int)states.inCage;
-        boat = thisAnimal.transform.root;
+        boat = GameObject.Find("Bateau").transform;
+        player = transform.parent;
 
         Vector2 startDirection = new Vector2(Random.Range(-1.0f, 1.0f), Random.Range(-1.0f, 1.0f));
         ancientDirection = startDirection;
@@ -43,10 +42,10 @@ public class AI : MonoBehaviour {
 	}
 	
 	void Update () {
-        animalList = transform.root.GetComponentsInChildren<Animal>();
+        animalList = boat.GetComponentsInChildren<Animal>();
 
         if (currentState != (int)states.beingCarried && transform.parent.tag == "Player") {
-            Debug.Log("PICKED ANIMAL");
+            transform.parent = player;
             currentState = (int)states.beingCarried;
         }
 
@@ -76,7 +75,7 @@ public class AI : MonoBehaviour {
                     foreach(Animal a in animalList) {
                         if (a.GetComponent<AI>().isEscaped && a.getId() != thisAnimal.getId() && thisAnimal.getType() == false && a.getType() == true) {
                             float distance = GetDistance(a.transform.position);
-                            if (distance < 1) {
+                            if (distance < 5) {
                                 prey = a.gameObject;
                                 currentState = (int)states.chasing;
                             }
@@ -86,34 +85,37 @@ public class AI : MonoBehaviour {
                 break;
 
             case (int)states.chasing:
-                moveSpeed = 0.5f;
-                float distancePrey = GetDistance(prey.transform.position);
-
-                if (distancePrey < 0.15f) {
+                if(prey == null) 
                     currentState = (int)states.wandering;
-                    Debug.Log("DESTROY");
-                    Destroy(prey.gameObject);
-                    prey = null;
-                }
-                else if (distancePrey < 1) {
-                    direction = Seek(prey.transform.position);
-                    transform.Translate(direction * moveSpeed * Time.deltaTime);
-                    ancientDirection = direction;
-                }
                 else {
-                    currentState = (int)states.wandering;
-                    prey = null;
+                    moveSpeed = 0.5f;
+                    float distancePrey = GetDistance(prey.transform.position);
+
+                    if (distancePrey < 0.5f) {
+                        currentState = (int)states.wandering;
+                        Debug.Log("DESTROY");
+                        Destroy(prey.gameObject);
+                        prey = null;
+                    }
+                    else if (distancePrey < 5) {
+                        direction = Seek(prey.transform.position);
+                        transform.Translate(direction * moveSpeed * Time.deltaTime);
+                        ancientDirection = direction;
+                    }
+                    else {
+                        currentState = (int)states.wandering;
+                        prey = null;
+                    }
                 }
-                    
+                  
                 break;
 
             case (int)states.beingCarried:
                 moveSpeed = 0;
 
-                if (transform.parent == null) {
+                if (thisAnimal.getZone() == 1) {
                     currentState = (int)states.wandering;
                     transform.parent = boat.transform;
-                    Debug.Log("DROPPED ANIMAL");
                 } 
 
                 break;
@@ -155,8 +157,21 @@ public class AI : MonoBehaviour {
             ancientDirection.y *= -1;
     }
 
+    void OnTriggerEnter2D(Collider2D other) {
+        if(other.name == "MaCage" && isEscaped) {
+            transform.parent = other.gameObject.transform;
+            thisAnimal.setZone(2);
+            currentState = (int)states.inCage;
+            isEscaped = false;
+
+            foreach (BoxCollider2D g in transform.parent.GetComponentsInChildren<BoxCollider2D>())
+                if (g.tag == "Porte")
+                    cageDoor = g.gameObject;
+        }
+    }
+
     void OnTriggerExit2D(Collider2D other) {
-        if (other.name == "La cage" && !isEscaped) {
+        if (other.name == "MaCage" && !isEscaped) {
             transform.parent = other.gameObject.transform;
             isEscaped = true;
         }
@@ -167,13 +182,15 @@ public class AI : MonoBehaviour {
             yield return new WaitForSeconds(Random.Range(2.0f, 4.0f));
             int rand = Random.Range(0, 10);
 
-            if (rand < 5 && currentState == (int)states.wandering) {
+            if (rand > 7 && !isEscaped)
+                wantToEscape = true;
+
+            else if (rand < 5 && (currentState == (int)states.wandering || currentState == (int)states.inCage)) {
+                previousState = currentState;
                 currentState = (int)states.drinking;
                 yield return new WaitForSeconds(DRINK_TIME);
-                currentState = (int)states.wandering;
-            }
-            else if (rand > 7 && !isEscaped)
-                wantToEscape = true;
+                currentState = previousState;
+            } 
         }
     }
 
