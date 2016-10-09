@@ -62,7 +62,6 @@ public class PlayerController : MonoBehaviour {
 
             if (objetPogner != null)
             {
-                Debug.Log(Input.GetAxis("Vertical"));
                 if (Input.GetAxis("Vertical") > 0.4f)
                 {
                     positionCircleCast = 0.4f;
@@ -212,12 +211,8 @@ public class PlayerController : MonoBehaviour {
         objetPogner.GetComponent<BoxCollider2D>().enabled = true;
         objetPogner.transform.parent = null;
 
-<<<<<<< HEAD
         //DERNIER ANIMAL
-        if (cage.GetComponent<CageController>().setAnimalInCage(objetPogner))
-=======
         if (cage.GetComponent<CageController>().setAnimalInCage(objetPogner))//Quand on full une cage avec le dernier animal
->>>>>>> a52bbf5cd6bf7c5d55b5d5d07f3ca045b4b896f4
         {
             objetPogner = Instantiate(cageVictoire);
             objetPogner.transform.parent = transform;

@@ -9,7 +9,7 @@ public class CoolDownController : MonoBehaviour {
     public GameObject monCircle;
     public GameObject Cage;
 
-    public Transform laRotation;
+    public Quaternion laRotation;
     public int laCouleur;
 
     float TimeCooldown;
@@ -30,8 +30,8 @@ public class CoolDownController : MonoBehaviour {
 
         if(TimeCooldown <= 0)
         {
-            GameObject maCage = Instantiate(Cage, laRotation.position, Quaternion.identity) as GameObject;
-            maCage.transform.rotation = laRotation.transform.rotation;
+            GameObject maCage = Instantiate(Cage, transform.position, laRotation) as GameObject;
+            //maCage.transform.rotation = laRotation.transform.rotation;
             maCage.GetComponent<CageController>().couleurCage = laCouleur;
             maCage.GetComponent<AuraCageSpawner>().SetAura();
 
