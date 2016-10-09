@@ -31,7 +31,7 @@ public class CoolDownController : MonoBehaviour {
         if(TimeCooldown <= 0)
         {
             GameObject maCage = Instantiate(Cage, transform.position, laRotation) as GameObject;
-            //maCage.transform.rotation = laRotation.transform.rotation;
+            maCage.transform.rotation = laRotation;
             maCage.GetComponent<CageController>().couleurCage = laCouleur;
             maCage.GetComponent<AuraCageSpawner>().SetAura();
 

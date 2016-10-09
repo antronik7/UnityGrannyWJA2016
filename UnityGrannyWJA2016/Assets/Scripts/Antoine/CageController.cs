@@ -235,9 +235,10 @@ public class CageController : MonoBehaviour {
 
     public void startCoolDown()
     {
-        GameObject monCoolDown = Instantiate(CageCoolDown, transform.position, Quaternion.identity) as GameObject;
-        //monCoolDown.GetComponent<CoolDownController>().laRotation = gameObject.transform.rotation;
-        //monCoolDown.GetComponent<CoolDownController>().laCouleur = couleurCage;
+        GameObject monCoolDown = (GameObject)Instantiate(CageCoolDown, transform.position, Quaternion.identity);
+        CoolDownController leCoolDownController = monCoolDown.GetComponent<CoolDownController>();
+        leCoolDownController.laRotation = gameObject.transform.rotation;
+        leCoolDownController.laCouleur = couleurCage;
         Destroy(gameObject);
     }
 }
