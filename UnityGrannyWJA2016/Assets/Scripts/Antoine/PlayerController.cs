@@ -195,7 +195,7 @@ public class PlayerController : MonoBehaviour {
         objetPogner.GetComponent<BoxCollider2D>().enabled = true;
         objetPogner.transform.parent = null;
 
-        if (cage.GetComponent<CageController>().setAnimalInCage(objetPogner))
+        if (cage.GetComponent<CageController>().setAnimalInCage(objetPogner))//Quand on full une cage avec le dernier animal
         {
             objetPogner = Instantiate(cageVictoire);
             objetPogner.transform.parent = transform;
@@ -216,6 +216,8 @@ public class PlayerController : MonoBehaviour {
         objetPogner.transform.position = originCircleCast;
         objetPogner.GetComponent<BoxCollider2D>().enabled = true;
         objetPogner.transform.parent = null;
+
+        GameManager.instance.addScore(prochainScore);
 
         //AjouterScore
         Destroy(objetPogner);
