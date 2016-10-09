@@ -6,7 +6,7 @@ public class FileAttente : MonoBehaviour {
     int animalCount = 0;
     const int maxNbrAnimals = 9;
     [SerializeField] int idSpawn;
-
+    public float damage;
 
     [SerializeField] GameObject[] arrPosition;//array de positions 0 = debut et lengt = fin
     GameObject[] arrAnimals;//array d'animaux 0 = debut et lengt = fin
@@ -46,10 +46,11 @@ public class FileAttente : MonoBehaviour {
 
     public void spawnAnimal(GameObject animal)
     {
+        
         if(maxNbrAnimals == animalCount)//si la file est pleine
         {
-            //DAMAIGE
-            Debug.Log("DAT MAGE");
+            //prendre un degat
+            GameManager.instance.Hud.GetComponent<HudManager>().HealthBar.GetComponent<HealthBar>().loseAmourDeDieu(damage);
         }
         else//sinon
         {
@@ -69,10 +70,6 @@ public class FileAttente : MonoBehaviour {
             arrAnimals[maxNbrAnimals - 1] = null;
             animalCount--;
             arrPosition[maxNbrAnimals - 1].GetComponent<PositionFile>().setIsOccupied(false);
-        }
-        else
-        {
-            Debug.Log("TU PEUX PAS TABARNAK YA PERSONNE ICITTE");
         }
     }
 

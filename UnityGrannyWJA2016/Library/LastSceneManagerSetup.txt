@@ -1,8 +1,4 @@
 sceneSetups:
-<<<<<<< HEAD
-- path: Assets/Scenes/Mathieu/mainMathieu.unity
-=======
-- path: Assets/Scenes/Domo/Domo.unity
->>>>>>> 19faf257267dbbde78992a0431860781c3317439
+- path: Assets/Scenes/Christian/MergeFeature 1.unity
   isLoaded: 1
   isActive: 1

@@ -54,6 +54,18 @@ public class spawner : MonoBehaviour {
             animalSpawner.GetComponent<Animal>().setColor(typeOfSpawner);
 
             file.GetComponent<FileAttente>().spawnAnimal(animalSpawner);
+            switch(typeOfSpawner)//updater le hud selon la file
+            {
+                case 0:
+                    GameManager.instance.Hud.GetComponent<HudManager>().FileMauve.GetComponent<TextFile>().incrementAnimaux();
+                    break;
+                case 1:
+                    GameManager.instance.Hud.GetComponent<HudManager>().FileOrange.GetComponent<TextFile>().incrementAnimaux();
+                    break;
+                case 2:
+                    GameManager.instance.Hud.GetComponent<HudManager>().FileVerte.GetComponent<TextFile>().incrementAnimaux();
+                    break;
+            }
 
             setNewTimerToSpawn(minTimeBeforeSpawn, maxTimeBeforeSpawn);
         }
