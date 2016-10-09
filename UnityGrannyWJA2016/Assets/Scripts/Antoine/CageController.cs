@@ -189,12 +189,11 @@ public class CageController : MonoBehaviour {
         else
         {
             //Trouver l'indexe de l'animal qui est sortie
-            while (animal.GetComponent<Animal>().getId() != animalNotInCombo[indexe].GetComponent<Animal>().getId())
-            {
-                indexe++;
-            }
-
-            animalNotInCombo.RemoveAt(indexe);
+            for (int i = 0; i < animalNotInCombo.Count; i++)
+                if (animal.GetComponent<Animal>().getId() == animalNotInCombo[i].GetComponent<Animal>().getId()) {
+                    animalNotInCombo.RemoveAt(i);
+                    i = animalNotInCombo.Count + 42;
+                }  
         }
 
         nbrOfAnimalInCage--;
@@ -210,7 +209,7 @@ public class CageController : MonoBehaviour {
             return 4;
         }
 
-        //3 animaux identique et un random (3 points pour grifondore) 
+        //3 animaux identique et un random (3 points pour Gryffondor) 
         if (animalInCombo1.Count == 3 || animalInCombo2.Count == 3)
         {
             return 3;
