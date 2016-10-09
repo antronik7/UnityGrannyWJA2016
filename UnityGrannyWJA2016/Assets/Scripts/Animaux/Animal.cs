@@ -61,22 +61,13 @@ public abstract class Animal : MonoBehaviour {
 
         if(c)
         {
-<<<<<<< HEAD
-            //Ajouter le coeur a l'animal
-            //coeur.SetActive(true);
-=======
             //Afficher le coeur
             leCoeur.SetActive(true);
->>>>>>> b9c7954f425c5453e4b2ed38253dfbc5db37d0d3
         }
         else
         {
             //Enlever le coueur
-<<<<<<< HEAD
-            //coeur.SetActive(false);
-=======
             leCoeur.SetActive(false);
->>>>>>> b9c7954f425c5453e4b2ed38253dfbc5db37d0d3
         }
     }
 
