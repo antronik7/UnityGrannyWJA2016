@@ -25,6 +25,9 @@ public abstract class Animal : MonoBehaviour {
     [Tooltip("id de l'animal")]
     [SerializeField] protected int id;
 
+    [SerializeField] GameObject coeur;
+
+
     public void setType(bool t) { type = t; }
     public void setName(string n) { name = n; }
     public void setIsEating(bool i) { isEating = i; }
@@ -58,10 +61,12 @@ public abstract class Animal : MonoBehaviour {
         if(c)
         {
             //Ajouter le coeur a l'animal
+            coeur.SetActive(true);
         }
         else
         {
             //Enlever le coueur
+            coeur.SetActive(false);
         }
     }
 
