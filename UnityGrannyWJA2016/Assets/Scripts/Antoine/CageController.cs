@@ -134,6 +134,7 @@ public class CageController : MonoBehaviour {
         int indexe = 0;
         bool animalAlreadyRemoveFromCombo = false;
 
+        animal.GetComponent<Animal>().setZone(1);
 
         //Verifier si l'animal est dans un combo
         if(animal.GetComponent<Animal>().getCouple() == true)
