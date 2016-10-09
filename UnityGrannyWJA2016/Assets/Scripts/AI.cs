@@ -174,7 +174,6 @@ public class AI : MonoBehaviour {
     }
 
     void OnCollisionEnter2D(Collision2D other) {
-        Debug.Log(other.gameObject.name);
         if(other.gameObject.name == "MurGauche" || other.gameObject.name == "MurDroite")
             ancientDirection.x *= -1;
         if(other.gameObject.name == "MurHaut" || other.gameObject.name == "MurBas")
@@ -208,7 +207,7 @@ public class AI : MonoBehaviour {
             yield return new WaitForSeconds(Random.Range(2.0f, 4.0f));
             int rand = Random.Range(0, 10);
 
-            if (rand > 7 && !isEscaped && thisAnimal.getCouple() == false)
+            if (rand > (9 - GameManager.instance.difficulte) && !isEscaped && thisAnimal.getCouple() == false)
                 wantToEscape = true;
 
             else if (rand < 5 && (currentState == (int)states.wandering || currentState == (int)states.inCage)) {
@@ -227,7 +226,6 @@ public class AI : MonoBehaviour {
         thisAnimal.GetComponent<BoxCollider2D>().isTrigger = true;
         yield return new WaitUntil(() => isEscaped);
         thisAnimal.GetComponentInParent<CageController>().animalExitCage(this.gameObject);
-        Debug.Log("Fuck off i'm out " + thisAnimal.getId());
         currentState = (int)states.wandering;
         thisAnimal.transform.parent = transform.root;
         thisAnimal.GetComponent<BoxCollider2D>().isTrigger = false;

@@ -36,6 +36,8 @@ public class GameManager : MonoBehaviour
 
     //Score du joueur
     public int playerScore = 0;
+    float Timer = 0;
+    public int difficulte = 1;
 
 
     //Vriable qui permet de savoir dans quel spawn le joueur est. -1 = Aucun, 0 = Mauve, 1 = Orange, 2 = Vert.
@@ -83,6 +85,24 @@ public class GameManager : MonoBehaviour
     void Start ()
     {
         
+    }
+
+    void Update()
+    {
+        Timer += Time.deltaTime;
+
+        if(Timer >= 0 && Timer < 59)
+        {
+            difficulte = 1;
+        }
+        else if ((Timer >= 60 && Timer < 119))
+        {
+            difficulte = 2;
+        }
+        else
+        {
+            difficulte = 3;
+        }
     }
 
     //Fonction appler par le personnage quand il ramasse un animal
