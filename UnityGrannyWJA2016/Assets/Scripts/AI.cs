@@ -12,7 +12,7 @@ public class AI : MonoBehaviour {
                  isEscaped,
                  wantToEscape;
     private enum states { inCage, drinking, wandering, chasing, beingCarried };
-    private GameObject cageDoor;
+    [SerializeField] private GameObject cageDoor;
     [SerializeField]private GameObject prey;
     private float moveSpeed;
     [SerializeField]private int currentState,
@@ -52,9 +52,10 @@ public class AI : MonoBehaviour {
         switch (currentState) {
             case (int)states.inCage:
                 moveSpeed = 0.4f;
-
+               // Debug.Log(GetDistance(cageDoor.transform.position));
                 if (wantToEscape && !isEscaped) {
                     direction = Seek(cageDoor.transform.position);
+                    ancientDirection = direction;
                     StartCoroutine(AnimalEscape());
                 }
                 else
@@ -63,16 +64,17 @@ public class AI : MonoBehaviour {
                 transform.Translate(direction * moveSpeed * Time.deltaTime);
                 ancientDirection = direction;
 
-                foreach (Animal a in animalList) {
-                    if (!a.GetComponent<AI>().isEscaped && a.getId() != thisAnimal.getId() && thisAnimal.getType() == false && a.getType() == true) {
-                        float distance = GetDistance(a.transform.position);
-                        if (distance < 2) {
-                            prey = a.gameObject;
-                            previousState = currentState;
-                            currentState = (int)states.chasing;
+                if(thisAnimal.getCouple() == false)
+                    foreach (Animal a in animalList) {
+                        if (!a.GetComponent<AI>().isEscaped && a.getId() != thisAnimal.getId() && thisAnimal.getType() == false && a.getType() == true) {
+                            float distance = GetDistance(a.transform.position);
+                            if (distance < 2) {
+                                prey = a.gameObject;
+                                previousState = currentState;
+                                currentState = (int)states.chasing;
+                            }
                         }
                     }
-                }
 
                 break;
 
@@ -130,7 +132,10 @@ public class AI : MonoBehaviour {
                     currentState = (int)states.wandering;
                     transform.parent = boat.transform;
                 } 
-
+                /*else if(thisAnimal.getZone() == 2 && !thisAnimal.getgrabed()) {
+                    currentState = (int)states.inCage;
+                }
+                */
                 break;
         }
     }
@@ -138,13 +143,14 @@ public class AI : MonoBehaviour {
     Vector2 Wander() {
         direction.x = ancientDirection.x + Random.Range(-0.1f, 0.1f);
         direction.y = ancientDirection.y + Random.Range(-0.1f, 0.1f);
+       // direction.x *= transform.localScale.x;
 
         return Normalize(direction);
     }
 
     Vector2 Seek(Vector2 pos) {
         Vector2 movingTo;
-        movingTo.x = (pos.x - transform.position.x) * transform.localScale.x;
+        movingTo.x = (pos.x - transform.position.x) * Mathf.Sign(transform.localScale.x);
         movingTo.y = pos.y - transform.position.y;
         return Normalize(movingTo);
     }
@@ -164,6 +170,7 @@ public class AI : MonoBehaviour {
     }
 
     void OnCollisionEnter2D(Collision2D other) {
+        Debug.Log(other.gameObject.name);
         if(other.gameObject.name == "MurGauche" || other.gameObject.name == "MurDroite")
             ancientDirection.x *= -1;
         if(other.gameObject.name == "MurHaut" || other.gameObject.name == "MurBas")
@@ -171,7 +178,10 @@ public class AI : MonoBehaviour {
     }
 
     void OnTriggerEnter2D(Collider2D other) {
-        if(other.name == "MaCage" && isEscaped) {
+        Debug.Log(other.name);
+        if(other.name == "MaCage") {
+            Debug.Log("BLEBLEBLE");
+            ancientDirection = new Vector2(Random.Range(-0.5f, 0.5f), Random.Range(-1.0f, 1.0f));
             transform.parent = other.gameObject.transform;
             thisAnimal.setZone(2);
             currentState = (int)states.inCage;
@@ -195,13 +205,15 @@ public class AI : MonoBehaviour {
             yield return new WaitForSeconds(Random.Range(2.0f, 4.0f));
             int rand = Random.Range(0, 10);
 
-            if (rand > 7 && !isEscaped)
+            if (rand > 7 && !isEscaped && thisAnimal.getCouple() == false)
                 wantToEscape = true;
 
             else if (rand < 5 && (currentState == (int)states.wandering || currentState == (int)states.inCage)) {
                 previousState = currentState;
                 currentState = (int)states.drinking;
+                thisAnimal.toggleAnimatorWalk();
                 yield return new WaitForSeconds(DRINK_TIME);
+                thisAnimal.toggleAnimatorWalk();
                 currentState = previousState;
             } 
         }

@@ -8,11 +8,16 @@ public class AuraCageSpawner : MonoBehaviour {
 
     // Use this for initialization
     void Awake () {
-        Aura.GetComponent<SpriteRenderer>().sprite = lesAuras[GetComponent<CageController>().couleurCage];
+        
     }
 	
 	// Update is called once per frame
 	void Update () {
 	
 	}
+
+    public void SetAura()
+    {
+        Aura.GetComponent<SpriteRenderer>().sprite = lesAuras[GetComponent<CageController>().couleurCage];
+    }
 }

@@ -44,6 +44,8 @@ public abstract class Animal : MonoBehaviour {
             gameObject.AddComponent<AI>();
             gameObject.GetComponent<ComportementSpawn>().enabled = false;
         }
+        else
+            toggleAnimatorWalk();
     }
 
     public void setCouple(bool c)

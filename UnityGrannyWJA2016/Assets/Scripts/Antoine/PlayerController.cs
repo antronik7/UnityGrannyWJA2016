@@ -2,11 +2,14 @@
 using System.Collections;
 
 public class PlayerController : MonoBehaviour {
-    public int SpeedPerso = 1;
+    public float SpeedPerso = 1;
     public LayerMask myLayerMask;
     public LayerMask myLayerMaskCage;
     public LayerMask myLayerMaskEntrepot;
     public GameObject cageVictoire;
+    public GameObject PositionStorage;
+    public GameObject ArrowRotator;
+    public GameObject ArrowSprite;
 
     bool facingRight = true;
     GameObject objetPogner = null;
@@ -15,12 +18,16 @@ public class PlayerController : MonoBehaviour {
     int prochainScore = 0;
 
     // Use this for initialization
+
     void Start () {
         monAnimator = GetComponent<Animator>();
 	}
 	
 	// Update is called once per frame
 	void Update () {
+        Quaternion rotation = Quaternion.LookRotation (PositionStorage.transform.position - ArrowRotator.transform.position, ArrowRotator.transform.TransformDirection(Vector3.up));
+        ArrowRotator.transform.rotation = new Quaternion(0, 0, rotation.z, rotation.w);
+
         if (objetPogner != null)
         {
             objetPogner.transform.position = new Vector3(transform.position.x, transform.position.y + 0.2f, 0);
@@ -202,6 +209,7 @@ public class PlayerController : MonoBehaviour {
             objetPogner.transform.position = new Vector3(transform.position.x, transform.position.y + 0.2f, 0);
             monAnimator.SetTrigger("Porte");
             prochainScore = cage.GetComponent<CageController>().calculateScore();
+            ArrowSprite.GetComponent<SpriteRenderer>().enabled = true;
         }
         else
         {
@@ -222,6 +230,8 @@ public class PlayerController : MonoBehaviour {
         //AjouterScore
         Destroy(objetPogner);
         objetPogner = null;
+
+        ArrowSprite.GetComponent<SpriteRenderer>().enabled = false;
     }
 
 
