@@ -1,10 +1,14 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public class GameManager : MonoBehaviour
 {
 
     public static GameManager instance = null;              //Static instance of GameManager which allows it to be accessed by any other script.
+
+    public List<int> couleurCageSpawner;
+    public List<GameObject> listeCage;
 
     //Tableau des spawner
     [SerializeField] GameObject[] allSpawner;
@@ -39,6 +43,24 @@ public class GameManager : MonoBehaviour
 
         //Sets this to not be destroyed when reloading scene
         DontDestroyOnLoad(gameObject);
+
+        int compteur = 0;
+
+        while (couleurCageSpawner.Count >= 1)
+        {
+            int randomIndexCouleur = Random.Range(0, couleurCageSpawner.Count);
+
+            listeCage[compteur].GetComponent<CageController>().couleurCage = couleurCageSpawner[randomIndexCouleur];
+            listeCage[compteur].GetComponent<AuraCageSpawner>().SetAura();
+            couleurCageSpawner.RemoveAt(randomIndexCouleur);
+
+            compteur++;
+        }
+    }
+
+    void Start ()
+    {
+        
     }
 
     //Fonction appler par le personnage quand il ramasse un animal
