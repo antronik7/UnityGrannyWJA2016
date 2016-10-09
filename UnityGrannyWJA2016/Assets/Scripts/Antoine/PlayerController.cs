@@ -10,8 +10,6 @@ public class PlayerController : MonoBehaviour {
     public LayerMask myLayerMaskWall;
     public GameObject cageVictoire;
     public GameObject PositionStorage;
-    public GameObject ArrowRotator;
-    public GameObject ArrowSprite;
     
 
     bool facingRight = true;
@@ -28,8 +26,7 @@ public class PlayerController : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-        Quaternion rotation = Quaternion.LookRotation (PositionStorage.transform.position - ArrowRotator.transform.position, ArrowRotator.transform.TransformDirection(Vector3.up));
-        ArrowRotator.transform.rotation = new Quaternion(0, 0, rotation.z, rotation.w);
+        
 
         if (objetPogner != null)
         {
@@ -178,8 +175,12 @@ public class PlayerController : MonoBehaviour {
         if (objetPogner.GetComponent<Animal>().getZone() == 2)
         {
             RaycastHit2D hitCage = Physics2D.CircleCast(originCircleCast, 0.1f, Vector2.right, 0F, myLayerMaskCage);
-
-            hitCage.collider.gameObject.GetComponent<CageController>().animalExitCage(objetPogner);
+            
+            if(hitCage.collider != null)
+            {
+                hitCage.collider.gameObject.GetComponent<CageController>().animalExitCage(objetPogner);
+            }
+            
         }
 
         objetPogner.GetComponent<Animal>().setgrabed(true);
@@ -223,7 +224,6 @@ public class PlayerController : MonoBehaviour {
             objetPogner.transform.position = new Vector3(transform.position.x, transform.position.y + 0.2f, 0);
             monAnimator.SetTrigger("Porte");
             prochainScore = cage.GetComponent<CageController>().calculateScore();
-            ArrowSprite.GetComponent<SpriteRenderer>().enabled = true;
 
             StartCoroutine(CoolDown(cage));
             
@@ -247,8 +247,6 @@ public class PlayerController : MonoBehaviour {
         //AjouterScore
         Destroy(objetPogner);
         objetPogner = null;
-
-        ArrowSprite.GetComponent<SpriteRenderer>().enabled = false;
     }
 
 
@@ -260,7 +258,7 @@ public class PlayerController : MonoBehaviour {
 
     IEnumerator CoolDown(GameObject cage)
     {
-        yield return new WaitForSeconds(0.1f);
+        yield return new WaitForSeconds(0.05f);
         cage.GetComponent<CageController>().startCoolDown();
     }
 }
