@@ -1,4 +1,4 @@
 sceneSetups:
-- path: Assets/Scenes/Antoine/Main.unity
+- path: Assets/Scenes/Christian/maincopy.unity
   isLoaded: 1
   isActive: 1
