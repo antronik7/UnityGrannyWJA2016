@@ -48,13 +48,13 @@ public class GameManager : MonoBehaviour
         switch (spawnActif)//updater le hud selon la file
         {
             case 0:
-                GameManager.instance.Hud.GetComponent<HudManager>().FileMauve.GetComponent<TextFile>().incrementAnimaux();
+                GameManager.instance.Hud.GetComponent<HudManager>().FileMauve.GetComponent<TextFile>().decrementAnimaux();
                 break;
             case 1:
-                GameManager.instance.Hud.GetComponent<HudManager>().FileOrange.GetComponent<TextFile>().incrementAnimaux();
+                GameManager.instance.Hud.GetComponent<HudManager>().FileOrange.GetComponent<TextFile>().decrementAnimaux();
                 break;
             case 2:
-                GameManager.instance.Hud.GetComponent<HudManager>().FileVerte.GetComponent<TextFile>().incrementAnimaux();
+                GameManager.instance.Hud.GetComponent<HudManager>().FileVerte.GetComponent<TextFile>().decrementAnimaux();
                 break;
         }
     }

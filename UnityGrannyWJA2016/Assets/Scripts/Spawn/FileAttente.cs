@@ -4,7 +4,7 @@ using System.Collections;
 public class FileAttente : MonoBehaviour {
 
     int animalCount = 0;
-    const int maxNbrAnimals = 9;
+    [SerializeField] int maxNbrAnimals = 100;
     [SerializeField] int idSpawn;
     public float damage;
 
