@@ -1,6 +1,10 @@
 sceneSetups:
 <<<<<<< HEAD
+<<<<<<< HEAD
 - path: Assets/Scenes/Antoine/MergeFeature.unity
+=======
+- path: Assets/Scenes/Christian/MergeFeature 1.unity
+>>>>>>> 3dfcf6cbb4a2cb210e19630632ab4d0bb1f63431
 =======
 - path: Assets/Scenes/Mathieu/mainMathieu.unity
 >>>>>>> b077f4efb337450a5ade1391ecac44dba5ae9a9c
