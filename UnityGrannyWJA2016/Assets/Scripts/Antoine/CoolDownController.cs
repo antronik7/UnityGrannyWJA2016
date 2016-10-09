@@ -43,6 +43,7 @@ public class CoolDownController : MonoBehaviour {
             GameObject temp = Instantiate(rondASpawner, maCage.transform.position + new Vector3(-0.49f, 0.49f, 0), Quaternion.identity) as GameObject;
             temp.GetComponent<rondCage>().setRond(laCouleur);
             temp.transform.parent = maCage.transform;
+            maCage.GetComponent<CageController>().setRond(temp);
 
             Destroy(gameObject);
         }
