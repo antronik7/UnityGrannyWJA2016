@@ -28,6 +28,8 @@ public abstract class Animal : MonoBehaviour {
     [SerializeField] GameObject coeur;
     GameObject leCoeur;
 
+    public AudioClip sonAnimal;
+
 
     public void setType(bool t) { type = t; }
     public void setName(string n) { name = n; }

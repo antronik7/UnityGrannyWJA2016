@@ -10,7 +10,7 @@ public class PlayerController : MonoBehaviour {
     public LayerMask myLayerMaskWall;
     public GameObject cageVictoire;
     public GameObject PositionStorage;
-    
+
 
     bool facingRight = true;
     GameObject objetPogner = null;
@@ -18,10 +18,16 @@ public class PlayerController : MonoBehaviour {
 
     int prochainScore = 0;
 
+    SonPersonnage gestionnaireSons;
+
+
     // Use this for initialization
 
     void Start () {
         monAnimator = GetComponent<Animator>();
+
+        gestionnaireSons = GetComponent<SonPersonnage>();
+
 	}
 	
 	// Update is called once per frame
@@ -116,6 +122,7 @@ public class PlayerController : MonoBehaviour {
 
                 if (hit.collider != null)// Prendre Objet
                 {
+
                     monAnimator.SetTrigger("Porte");
                     objetPogner = hit.collider.gameObject;
 
@@ -219,6 +226,7 @@ public class PlayerController : MonoBehaviour {
         //DERNIER ANIMAL
         if (cage.GetComponent<CageController>().setAnimalInCage(objetPogner))//Quand on full une cage avec le dernier animal
         {
+
             objetPogner = Instantiate(cageVictoire);
             objetPogner.transform.parent = transform;
             objetPogner.transform.position = new Vector3(transform.position.x, transform.position.y + 0.2f, 0);
@@ -241,6 +249,7 @@ public class PlayerController : MonoBehaviour {
         objetPogner.transform.position = originCircleCast;
         objetPogner.GetComponent<BoxCollider2D>().enabled = true;
         objetPogner.transform.parent = null;
+        gestionnaireSons.playJailSuccesSound();
 
         GameManager.instance.addScore(prochainScore);
 
