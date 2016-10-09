@@ -7,7 +7,8 @@ public class FinalScoreTextController : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-        int scoreFinal = 0;
+        int scoreFinal = GameManager.instance.playerScore;
+        //GameManager.instance.deleteGameManager();
         GetComponent<Text>().text = scoreFinal.ToString();
 	}
 	
