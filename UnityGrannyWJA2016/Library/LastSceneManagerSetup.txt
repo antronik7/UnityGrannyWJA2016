@@ -1,4 +1,4 @@
 sceneSetups:
-- path: Assets/Scenes/Domo/Domo.unity
+- path: Assets/Scenes/Mathieu/MergeFinalMathieu.unity
   isLoaded: 1
   isActive: 1

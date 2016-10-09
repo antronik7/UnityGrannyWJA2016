@@ -61,12 +61,12 @@ public abstract class Animal : MonoBehaviour {
         if(c)
         {
             //Ajouter le coeur a l'animal
-            coeur.SetActive(true);
+            //coeur.SetActive(true);
         }
         else
         {
             //Enlever le coueur
-            coeur.SetActive(false);
+            //coeur.SetActive(false);
         }
     }
 
