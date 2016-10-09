@@ -16,7 +16,17 @@ public class GameManager : MonoBehaviour
     [SerializeField]
     GameObject[] GoduHands;
 
-    public GameObject Hud;
+    [SerializeField]
+    GameObject FeedbackScore;
+
+    [SerializeField]
+    GameObject FeedbackAmour;
+
+    [SerializeField]
+    GameObject Hud;
+
+    [SerializeField]
+    GameObject player;
 
     //L'amour de dieu
     public float playerLife = 100;
@@ -107,6 +117,8 @@ public class GameManager : MonoBehaviour
         playerLife -= damage;
         Hud.GetComponent<HudManager>().HealthBar.GetComponent<HealthBar>().loseAmourDeDieu(damage);
         GoduHands[0].GetComponent<Animator>().SetBool("play", true);//feedback god
+        GameObject temp = Instantiate(FeedbackAmour, player.transform.position + new Vector3(0, 0.25f, 0), Quaternion.identity) as GameObject;
+        temp.GetComponent<FbScore>().setTextAmour(damage);
     }
 
     //Quand le joueur entre dans le trigger box du spawn, le spawn appel cette fonction pour setter son spawn comme spawn actif
@@ -122,6 +134,7 @@ public class GameManager : MonoBehaviour
 
     public void addScore(int s)
     {
+        s *= 100;
         //add life
         playerLife += 5;
         Hud.GetComponent<HudManager>().HealthBar.GetComponent<HealthBar>().gainAmourDeDieu(5);
@@ -130,6 +143,8 @@ public class GameManager : MonoBehaviour
         //add score
         playerScore += s;
         Hud.GetComponent<HudManager>().Score.GetComponent<Score>().addScore(s);
+        GameObject temp = Instantiate(FeedbackScore, player.transform.position + new Vector3(0,0.25f,0) , Quaternion.identity) as GameObject;
+        temp.GetComponent<FbScore>().setTextScore(s);
        
     }
 
