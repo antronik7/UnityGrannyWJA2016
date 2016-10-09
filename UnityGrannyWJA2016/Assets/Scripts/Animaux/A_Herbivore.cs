@@ -15,6 +15,6 @@ public class A_Herbivore : Animal{
 
     public void toggleAnimatorDead()
     {
-        gameObject.GetComponent<Animator>().SetBool("dead", false);
+        gameObject.GetComponent<Animator>().SetBool("dead", true);
     }
 }

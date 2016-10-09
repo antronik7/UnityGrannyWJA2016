@@ -51,6 +51,7 @@ public class FileAttente : MonoBehaviour {
         {
             //prendre un degat
             GameManager.instance.damageToHud(damage);
+            Destroy(animal);
         }
         else//sinon
         {

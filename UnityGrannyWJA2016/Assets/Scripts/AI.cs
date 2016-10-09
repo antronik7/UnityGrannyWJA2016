@@ -14,6 +14,7 @@ public class AI : MonoBehaviour {
     private enum states { inCage, drinking, wandering, chasing, beingCarried };
     [SerializeField] private GameObject cageDoor;
     [SerializeField]private GameObject prey;
+    public GameObject boucane;
     private float moveSpeed;
     [SerializeField]private int currentState,
                                 previousState;
@@ -33,6 +34,7 @@ public class AI : MonoBehaviour {
         currentState = (int)states.inCage;
         boat = GameObject.Find("Bateau").transform;
         player = transform.parent;
+        boucane = (GameObject)Resources.Load("BASTON");
 
         Vector2 startDirection = new Vector2(Random.Range(-1.0f, 1.0f), Random.Range(-1.0f, 1.0f));
         ancientDirection = startDirection;
@@ -52,7 +54,7 @@ public class AI : MonoBehaviour {
         if (thisAnimal.getCouple() == true)
             wantToEscape = false;
 
-        if (currentState != (int)states.beingCarried && transform.parent.tag == "Player") {
+        if (currentState != (int)states.beingCarried && transform.parent != null && transform.parent.tag == "Player") {
             transform.parent = player;
             currentState = (int)states.beingCarried;
         }
@@ -108,17 +110,20 @@ public class AI : MonoBehaviour {
             case (int)states.chasing:
                 if(prey == null) 
                     currentState = (int)states.wandering;
+                else if(prey.GetComponent<Animal>().getgrabed() == true) {
+                    currentState = (int)states.wandering;
+                    prey = null;
+                }
                 else {
                     moveSpeed = 0.5f;
                     float distancePrey = GetDistance(prey.transform.position);
                     if (distancePrey < 0.2f) {
-                        currentState = previousState;
-                        if(thisAnimal.getZone() == 2)
+                        currentState = (int)states.drinking;
+                        if (thisAnimal.getZone() == 2)
                             thisAnimal.GetComponentInParent<CageController>().animalExitCage(prey);
+                        StartCoroutine(AnimalEat());
                         Debug.Log("DESTROY");
-                        Destroy(prey.gameObject);
                         GameManager.instance.damageToHud(3);
-                        prey = null;
                     }
                     else if (distancePrey < 2) {
                         direction = Seek(prey.transform.position);
@@ -138,6 +143,7 @@ public class AI : MonoBehaviour {
                 thisAnimal.GetComponent<SpriteRenderer>().flipX = false;
 
                 if (thisAnimal.getZone() == 1 && !thisAnimal.getgrabed()) {
+                    //thisAnimal.setgrabed(true);
                     isEscaped = true;
                     wantToEscape = false;
                     currentState = (int)states.wandering;
@@ -190,7 +196,7 @@ public class AI : MonoBehaviour {
 
     void OnTriggerEnter2D(Collider2D other) {
         if(other.name == "MaCage") {
-            ancientDirection = new Vector2(Random.Range(-0.5f, 0.5f), Random.Range(-1.0f, 1.0f));
+            ancientDirection = new Vector2(Random.Range(-1.0f, 1.0f), Random.Range(-1.0f, 1.0f));
             transform.parent = other.gameObject.transform;
             thisAnimal.setZone(2);
             currentState = (int)states.inCage;
@@ -218,7 +224,7 @@ public class AI : MonoBehaviour {
             if (rand > (9 - GameManager.instance.difficulte) && !isEscaped && thisAnimal.getCouple() == false)
                 wantToEscape = true;
 
-            else if (rand < 5 && (currentState == (int)states.wandering || currentState == (int)states.inCage)) {
+            else if (rand < 5 && (currentState == (int)states.wandering || currentState == (int)states.inCage && currentState != (int)states.drinking)) {
                 previousState = currentState;
                 currentState = (int)states.drinking;
                 thisAnimal.toggleAnimationWalkOff();
@@ -237,5 +243,17 @@ public class AI : MonoBehaviour {
         currentState = (int)states.wandering;
         thisAnimal.transform.parent = transform.root;
         thisAnimal.GetComponent<BoxCollider2D>().isTrigger = false;
+    }
+
+    IEnumerator AnimalEat() {
+        GameObject instObject = (GameObject)Instantiate(boucane, thisAnimal.transform.position, Quaternion.identity);
+        thisAnimal.toggleAnimationWalkOff();
+        Destroy(prey);
+        prey = null;
+
+        yield return new WaitForSeconds(1f);
+        Destroy(instObject);
+        thisAnimal.toggleAnimationWalkOn();
+        currentState = previousState;
     }
 }
