@@ -12,15 +12,15 @@ public class AI : MonoBehaviour {
                  isEscaped,
                  wantToEscape;
     private enum states { inCage, drinking, wandering, chasing, beingCarried };
-    private GameObject cageDoor,
-                       prey;
+    private GameObject cageDoor;
+    [SerializeField]private GameObject prey;
     private float moveSpeed;
-    public int currentState,
-               previousState;
+    [SerializeField]private int currentState,
+                                previousState;
     private Transform boat,
                       player;
-    private Vector2 ancientDirection,
-                    direction;
+    private Vector2 ancientDirection;
+    [SerializeField] private Vector2 direction;
 
 	void Start () {
         thisAnimal = GetComponent<Animal>();
@@ -63,6 +63,17 @@ public class AI : MonoBehaviour {
                 transform.Translate(direction * moveSpeed * Time.deltaTime);
                 ancientDirection = direction;
 
+                foreach (Animal a in animalList) {
+                    if (!a.GetComponent<AI>().isEscaped && a.getId() != thisAnimal.getId() && thisAnimal.getType() == false && a.getType() == true) {
+                        float distance = GetDistance(a.transform.position);
+                        if (distance < 2) {
+                            prey = a.gameObject;
+                            previousState = currentState;
+                            currentState = (int)states.chasing;
+                        }
+                    }
+                }
+
                 break;
 
             case (int)states.wandering:
@@ -75,8 +86,9 @@ public class AI : MonoBehaviour {
                     foreach(Animal a in animalList) {
                         if (a.GetComponent<AI>().isEscaped && a.getId() != thisAnimal.getId() && thisAnimal.getType() == false && a.getType() == true) {
                             float distance = GetDistance(a.transform.position);
-                            if (distance < 5) {
+                            if (distance < 2) {
                                 prey = a.gameObject;
+                                previousState = currentState;
                                 currentState = (int)states.chasing;
                             }
                         }
@@ -90,20 +102,21 @@ public class AI : MonoBehaviour {
                 else {
                     moveSpeed = 0.5f;
                     float distancePrey = GetDistance(prey.transform.position);
-
-                    if (distancePrey < 0.5f) {
-                        currentState = (int)states.wandering;
+                    if (distancePrey < 0.2f) {
+                        currentState = previousState;
+                        if(thisAnimal.getZone() == 2)
+                            thisAnimal.GetComponentInParent<CageController>().animalExitCage(prey);
                         Debug.Log("DESTROY");
                         Destroy(prey.gameObject);
                         prey = null;
                     }
-                    else if (distancePrey < 5) {
+                    else if (distancePrey < 2) {
                         direction = Seek(prey.transform.position);
                         transform.Translate(direction * moveSpeed * Time.deltaTime);
                         ancientDirection = direction;
                     }
                     else {
-                        currentState = (int)states.wandering;
+                        currentState = previousState;
                         prey = null;
                     }
                 }
@@ -113,7 +126,7 @@ public class AI : MonoBehaviour {
             case (int)states.beingCarried:
                 moveSpeed = 0;
 
-                if (thisAnimal.getZone() == 1) {
+                if (thisAnimal.getZone() == 1 && !thisAnimal.getgrabed()) {
                     currentState = (int)states.wandering;
                     transform.parent = boat.transform;
                 } 
@@ -131,7 +144,7 @@ public class AI : MonoBehaviour {
 
     Vector2 Seek(Vector2 pos) {
         Vector2 movingTo;
-        movingTo.x = pos.x - transform.position.x;
+        movingTo.x = (pos.x - transform.position.x) * transform.localScale.x;
         movingTo.y = pos.y - transform.position.y;
         return Normalize(movingTo);
     }
@@ -198,6 +211,7 @@ public class AI : MonoBehaviour {
         wantToEscape = false;
         thisAnimal.GetComponent<BoxCollider2D>().isTrigger = true;
         yield return new WaitUntil(() => isEscaped);
+        thisAnimal.GetComponentInParent<CageController>().animalExitCage(this.gameObject);
         Debug.Log("Fuck off i'm out " + thisAnimal.getId());
         currentState = (int)states.wandering;
         thisAnimal.transform.parent = transform.root;

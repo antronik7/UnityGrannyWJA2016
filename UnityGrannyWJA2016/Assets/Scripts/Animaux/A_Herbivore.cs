@@ -12,4 +12,9 @@ public class A_Herbivore : Animal{
         grabed = false;
         zone = 0;
     }
+
+    public void toggleAnimatorDead()
+    {
+        gameObject.GetComponent<Animator>().SetBool("dead", false);
+    }
 }
