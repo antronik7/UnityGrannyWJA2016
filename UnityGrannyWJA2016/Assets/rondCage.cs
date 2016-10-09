@@ -38,8 +38,8 @@ public class rondCage : MonoBehaviour {
         nbAnimaux.text = current.ToString();
         if(current == 4)
         {
-            nbAnimaux.color = new Color(255, 255, 255);
-            nbAnimauxMax.color = new Color(255, 255, 255);
+            nbAnimaux.color = new Color(1, 1, 1);
+            nbAnimauxMax.color = new Color(1, 1, 1);
         }
     }
 
@@ -47,11 +47,9 @@ public class rondCage : MonoBehaviour {
     {
         current--;
         nbAnimaux.text = current.ToString();
-        if (current < 4)
-        {
-            nbAnimaux.color = new Color(69, 40, 60);
-            nbAnimauxMax.color = new Color(69, 40, 60);
-        }
+        nbAnimaux.color = new Color(69/255, 40/255, 60/255);
+        nbAnimauxMax.color = new Color(69/250, 40/250, 60/250);
+
     }
 
     public void setRond(int i)
