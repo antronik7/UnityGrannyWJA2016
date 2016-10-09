@@ -49,88 +49,90 @@ public class PlayerController : MonoBehaviour {
             monAnimator.SetBool("PersoBouge", false);
         }
 
-
-        if(Input.GetButtonDown("Jump"))
+        if(GameManager.instance.CanPLay)
         {
-            float positionCircleCast;
-
-            if (facingRight)
+            if (Input.GetButtonDown("Jump"))
             {
-                positionCircleCast = 0.2f;
-            }
-            else
-            {
-                positionCircleCast = -0.2f;
-            }
+                float positionCircleCast;
 
-            Vector2 originCircleCast = new Vector2(transform.position.x + positionCircleCast, transform.position.y);
-
-            if (objetPogner != null)
-            {
-                if (Input.GetAxis("Vertical") > 0.4f)
+                if (facingRight)
                 {
-                    positionCircleCast = 0.4f;
-                    originCircleCast = new Vector2(transform.position.x, transform.position.y + positionCircleCast);
+                    positionCircleCast = 0.2f;
                 }
-                else if (Input.GetAxis("Vertical") < -0.4f)
+                else
                 {
-                    positionCircleCast = -0.3f;
-                    originCircleCast = new Vector2(transform.position.x, transform.position.y + positionCircleCast);
+                    positionCircleCast = -0.2f;
                 }
 
-                if (objetPogner.tag == "Cage") //DEPOSE ENTREPOT
+                Vector2 originCircleCast = new Vector2(transform.position.x + positionCircleCast, transform.position.y);
+
+                if (objetPogner != null)
                 {
-
-                    RaycastHit2D hit = Physics2D.CircleCast(originCircleCast, 0.1f, Vector2.right, 0F, myLayerMaskEntrepot);
-
-                    if (hit.collider != null)
+                    if (Input.GetAxis("Vertical") > 0.4f)
                     {
-                        DeposeEntrepot(originCircleCast);
+                        positionCircleCast = 0.4f;
+                        originCircleCast = new Vector2(transform.position.x, transform.position.y + positionCircleCast);
+                    }
+                    else if (Input.GetAxis("Vertical") < -0.4f)
+                    {
+                        positionCircleCast = -0.3f;
+                        originCircleCast = new Vector2(transform.position.x, transform.position.y + positionCircleCast);
+                    }
+
+                    if (objetPogner.tag == "Cage") //DEPOSE ENTREPOT
+                    {
+
+                        RaycastHit2D hit = Physics2D.CircleCast(originCircleCast, 0.1f, Vector2.right, 0F, myLayerMaskEntrepot);
+
+                        if (hit.collider != null)
+                        {
+                            DeposeEntrepot(originCircleCast);
+                        }
+                    }
+                    else
+                    {
+                        RaycastHit2D hit = Physics2D.CircleCast(originCircleCast, 0.1f, Vector2.right, 0F, myLayerMaskCage);
+                        RaycastHit2D hitEntree = Physics2D.CircleCast(originCircleCast, 0.1f, Vector2.right, 0F, myLayerMaskEntree);
+
+                        Debug.Log(hitEntree.collider);
+
+                        if (hit.collider != null) //DEPOSE DANS UNE CAGE
+                        {
+                            if (hit.collider.gameObject.GetComponent<CageController>().couleurCage == objetPogner.GetComponent<Animal>().getColor())
+                            {
+                                if (hit.collider.gameObject.GetComponent<CageController>().getNbrAnimalInCage() < 4)
+                                {
+                                    DeposeCage(hit.collider.gameObject, originCircleCast);
+                                }
+
+                            }
+                        }
+                        else if (hitEntree.collider == null)
+                        {
+                            DeposeBateau(originCircleCast);
+                        }
+                        /*else //DEPOSE A TERRE
+                        {
+                            DeposeBateau(originCircleCast);
+                        }*/
                     }
                 }
                 else
                 {
-                    RaycastHit2D hit = Physics2D.CircleCast(originCircleCast, 0.1f, Vector2.right, 0F, myLayerMaskCage);
-                    RaycastHit2D hitEntree = Physics2D.CircleCast(originCircleCast, 0.1f, Vector2.right, 0F, myLayerMaskEntree);
+                    RaycastHit2D hit = Physics2D.CircleCast(originCircleCast, 0.1f, Vector2.right, 0F, myLayerMask);
 
-                    Debug.Log(hitEntree.collider);
-
-                    if (hit.collider != null) //DEPOSE DANS UNE CAGE
+                    if (hit.collider != null)// Prendre Objet
                     {
-                        if (hit.collider.gameObject.GetComponent<CageController>().couleurCage == objetPogner.GetComponent<Animal>().getColor())
+
+                        monAnimator.SetTrigger("Porte");
+                        objetPogner = hit.collider.gameObject;
+
+                        FlipObjet(objetPogner);
+
+                        if (objetPogner.tag == "Animal")
                         {
-                            if(hit.collider.gameObject.GetComponent<CageController>().getNbrAnimalInCage() < 4)
-                            {
-                                DeposeCage(hit.collider.gameObject, originCircleCast);
-                            }
-                            
+                            PrendreAnimal(objetPogner, originCircleCast);
                         }
-                    }
-                    else if (hitEntree.collider == null)
-                    {
-                        DeposeBateau(originCircleCast);
-                    }
-                    /*else //DEPOSE A TERRE
-                    {
-                        DeposeBateau(originCircleCast);
-                    }*/
-                }
-            }
-            else
-            {
-                RaycastHit2D hit = Physics2D.CircleCast(originCircleCast, 0.1f, Vector2.right, 0F, myLayerMask);
-
-                if (hit.collider != null)// Prendre Objet
-                {
-
-                    monAnimator.SetTrigger("Porte");
-                    objetPogner = hit.collider.gameObject;
-
-                    FlipObjet(objetPogner);
-                    
-                    if (objetPogner.tag == "Animal")
-                    {
-                        PrendreAnimal(objetPogner, originCircleCast);
                     }
                 }
             }
@@ -139,22 +141,24 @@ public class PlayerController : MonoBehaviour {
 
     void FixedUpdate()
     {
-
-        float horizontalAxis = Input.GetAxis("Horizontal");
-        float verticalAxis = Input.GetAxis("Vertical");
-
-        Vector3 vectorDirection = new Vector3(horizontalAxis, verticalAxis, 0);
-        //vectorDirection = vectorDirection.normalized;
-
-        GetComponent<Rigidbody2D>().velocity = vectorDirection * SpeedPerso;
-
-        if (horizontalAxis > 0 && !facingRight)
+        if(GameManager.instance.CanPLay)
         {
-            Flip();
-        }
-        else if (horizontalAxis < 0 && facingRight)
-        {
-            Flip();
+            float horizontalAxis = Input.GetAxis("Horizontal");
+            float verticalAxis = Input.GetAxis("Vertical");
+
+            Vector3 vectorDirection = new Vector3(horizontalAxis, verticalAxis, 0);
+            //vectorDirection = vectorDirection.normalized;
+
+            GetComponent<Rigidbody2D>().velocity = vectorDirection * SpeedPerso;
+
+            if (horizontalAxis > 0 && !facingRight)
+            {
+                Flip();
+            }
+            else if (horizontalAxis < 0 && facingRight)
+            {
+                Flip();
+            }
         }
     }
 

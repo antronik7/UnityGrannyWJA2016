@@ -38,7 +38,12 @@ public class GameManager : MonoBehaviour
     public int playerScore = 0;
     float Timer = 0;
     public int difficulte = 1;
+    public bool CanPLay = false;
 
+    [SerializeField]
+    Animator startAnimator;
+    [SerializeField]
+    Animator gameOverAnimator;
 
     //Vriable qui permet de savoir dans quel spawn le joueur est. -1 = Aucun, 0 = Mauve, 1 = Orange, 2 = Vert.
     int spawnActif = -1;
@@ -84,7 +89,8 @@ public class GameManager : MonoBehaviour
 
     void Start ()
     {
-        
+        Debug.Log("WTF");
+        startAnimator.SetBool("play", true);
     }
 
     void Update()
@@ -102,6 +108,12 @@ public class GameManager : MonoBehaviour
         else
         {
             difficulte = 3;
+        }
+
+        if(playerLife <= 0)
+        {
+            CanPLay = false;
+            gameOverAnimator.SetBool("play", true);
         }
     }
 
