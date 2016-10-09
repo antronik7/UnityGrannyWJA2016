@@ -3,6 +3,8 @@ using System.Collections;
 
 public class FinController : MonoBehaviour {
 
+    public AudioClip sonBobo;
+
 	// Use this for initialization
 	void Start () {
 	
@@ -16,5 +18,10 @@ public class FinController : MonoBehaviour {
     public void chargerMaScene ()
     {
         Application.LoadLevel("Menu");
+    }
+
+    public void playBoboSound()
+    {
+        AudioSource.PlayClipAtPoint(sonBobo, Vector3.zero, 1f);
     }
 }

@@ -188,6 +188,11 @@ public class GameManager : MonoBehaviour
         temp.GetComponent<FbScore>().setTextScore(s);
        
     }
+    
+    public void DestroyGameManager()
+    {
+        Destroy(gameObject);
+    }
 
 }
 
