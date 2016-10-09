@@ -4,7 +4,7 @@ using System.Collections;
 public class FileAttente : MonoBehaviour {
 
     int animalCount = 0;
-    [SerializeField] int maxNbrAnimals = 100;
+    [SerializeField] int maxNbrAnimals = 9;
     [SerializeField] int idSpawn;
     public float damage;
 
@@ -50,7 +50,7 @@ public class FileAttente : MonoBehaviour {
         if(maxNbrAnimals == animalCount)//si la file est pleine
         {
             //prendre un degat
-            GameManager.instance.Hud.GetComponent<HudManager>().HealthBar.GetComponent<HealthBar>().loseAmourDeDieu(damage);
+            GameManager.instance.damageToHud(damage);
         }
         else//sinon
         {
