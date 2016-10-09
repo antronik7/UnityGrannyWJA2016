@@ -9,6 +9,8 @@ public class GameManager : MonoBehaviour
     //Tableau des spawner
     [SerializeField] GameObject[] allSpawner;
 
+    public GameObject Hud;
+
     //L'amour de dieu
     public float playerLife;
 
@@ -43,6 +45,41 @@ public class GameManager : MonoBehaviour
     public void playerTakeAnimalInSpawn()
     {
         allSpawner[spawnActif].GetComponent<FileAttente>().takeAnimal();
+        switch (spawnActif)//updater le hud selon la file
+        {
+            case 0:
+                Hud.GetComponent<HudManager>().FileMauve.GetComponent<TextFile>().decrementAnimaux();
+                break;
+            case 1:
+                Hud.GetComponent<HudManager>().FileOrange.GetComponent<TextFile>().decrementAnimaux();
+                break;
+            case 2:
+                Hud.GetComponent<HudManager>().FileVerte.GetComponent<TextFile>().decrementAnimaux();
+                break;
+        }
+    }
+
+    //ajouter un au compteur d'animaux de la file recu en parametre
+    public void addAnimalInFileHud(int file)
+    {
+        switch (file)//updater le hud selon la file
+        {
+            case 0:
+                Hud.GetComponent<HudManager>().FileMauve.GetComponent<TextFile>().incrementAnimaux();
+                break;
+            case 1:
+                Hud.GetComponent<HudManager>().FileOrange.GetComponent<TextFile>().incrementAnimaux();
+                break;
+            case 2:
+                Hud.GetComponent<HudManager>().FileVerte.GetComponent<TextFile>().incrementAnimaux();
+                break;
+        }
+    }
+
+    public void damageToHud(float damage)
+    {
+        playerLife -= damage;
+        Hud.GetComponent<HudManager>().HealthBar.GetComponent<HealthBar>().loseAmourDeDieu(damage);
     }
 
     //Quand le joueur entre dans le trigger box du spawn, le spawn appel cette fonction pour setter son spawn comme spawn actif
@@ -55,6 +92,7 @@ public class GameManager : MonoBehaviour
     {
         spawnActif = -1;
     }
+
 }
 
        

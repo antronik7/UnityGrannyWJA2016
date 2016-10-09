@@ -54,6 +54,8 @@ public class spawner : MonoBehaviour {
             animalSpawner.GetComponent<Animal>().setColor(typeOfSpawner);
 
             file.GetComponent<FileAttente>().spawnAnimal(animalSpawner);
+            GameManager.instance.addAnimalInFileHud(typeOfSpawner);
+     
 
             setNewTimerToSpawn(minTimeBeforeSpawn, maxTimeBeforeSpawn);
         }
