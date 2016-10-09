@@ -117,6 +117,7 @@ public class AI : MonoBehaviour {
                             thisAnimal.GetComponentInParent<CageController>().animalExitCage(prey);
                         Debug.Log("DESTROY");
                         Destroy(prey.gameObject);
+                        GameManager.instance.damageToHud(3);
                         prey = null;
                     }
                     else if (distancePrey < 2) {
