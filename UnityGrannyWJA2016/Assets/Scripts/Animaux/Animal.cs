@@ -25,6 +25,10 @@ public abstract class Animal : MonoBehaviour {
     [Tooltip("id de l'animal")]
     [SerializeField] protected int id;
 
+    [SerializeField] GameObject coeur;
+    GameObject leCoeur;
+
+
     public void setType(bool t) { type = t; }
     public void setName(string n) { name = n; }
     public void setIsEating(bool i) { isEating = i; }
@@ -44,6 +48,10 @@ public abstract class Animal : MonoBehaviour {
             gameObject.AddComponent<AI>();
             gameObject.GetComponent<ComportementSpawn>().enabled = false;
         }
+        if (g)
+            toggleAnimationWalkOff();
+        else
+            toggleAnimationWalkOn();
     }
 
     public void setCouple(bool c)
@@ -53,14 +61,26 @@ public abstract class Animal : MonoBehaviour {
 
         if(c)
         {
-            //Ajouter le coeur a l'animal
+            //Afficher le coeur
+            leCoeur.SetActive(true);
         }
         else
         {
             //Enlever le coueur
+            leCoeur.SetActive(false);
         }
     }
 
+    public void setHearthGameObject()
+    {
+        leCoeur = (GameObject)Instantiate(coeur, transform.position, Quaternion.identity);
+
+        leCoeur.transform.parent = gameObject.transform;
+
+        leCoeur.transform.localPosition = new Vector2(0, 0.13f);
+
+        leCoeur.SetActive(false);
+    }
 
     public bool getType() { return type; }
     public string getName() { return name; }
@@ -72,17 +92,12 @@ public abstract class Animal : MonoBehaviour {
     public int getZone() { return zone; }
     public int getId() { return id;}
 
-    public void toggleAnimatorWalk()
-    {
-        bool temp = gameObject.GetComponent<Animator>().GetBool("walk");
-        if(temp)
-        {
-            gameObject.GetComponent<Animator>().SetBool("walk", false);
-        }
-        else
-        {
-            gameObject.GetComponent<Animator>().SetBool("walk", true);
-        }
+    public void toggleAnimationWalkOn() {
+        gameObject.GetComponent<Animator>().SetBool("walk", true);
+    }
+
+    public void toggleAnimationWalkOff() {
+        gameObject.GetComponent<Animator>().SetBool("walk", false);
     }
 
     public void toggleAnimatorCoupled()

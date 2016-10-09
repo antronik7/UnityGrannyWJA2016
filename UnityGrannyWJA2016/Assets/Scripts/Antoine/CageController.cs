@@ -8,13 +8,16 @@ public class CageController : MonoBehaviour {
     public int couleurCage;
 
     [SerializeField] List<GameObject> animalNotInCombo = new List<GameObject>();
-
     [SerializeField] List<GameObject> animalInCombo1 = new List<GameObject>();
     [SerializeField] List<GameObject> animalInCombo2 = new List<GameObject>();
+
+    GameObject monRond;
 
     GameObject[] food;
 
     [SerializeField] int nbrOfAnimalInCage = 0;
+
+    public GameObject CageCoolDown;
 
     // Use this for initialization
     void Start () {
@@ -39,6 +42,7 @@ public class CageController : MonoBehaviour {
         }
 
         nbrOfAnimalInCage++;
+        monRond.GetComponent<rondCage>().addAnimal();
 
         return cageComplet();
     }
@@ -189,15 +193,15 @@ public class CageController : MonoBehaviour {
         else
         {
             //Trouver l'indexe de l'animal qui est sortie
-            while (animal.GetComponent<Animal>().getId() != animalNotInCombo[indexe].GetComponent<Animal>().getId())
-            {
-                indexe++;
-            }
-
-            animalNotInCombo.RemoveAt(indexe);
+            for (int i = 0; i < animalNotInCombo.Count; i++)
+                if (animal.GetComponent<Animal>().getId() == animalNotInCombo[i].GetComponent<Animal>().getId()) {
+                    animalNotInCombo.RemoveAt(i);
+                    i = animalNotInCombo.Count + 42;
+                }  
         }
 
         nbrOfAnimalInCage--;
+        monRond.GetComponent<rondCage>().removeAnimal();
 
     }
 
@@ -210,7 +214,7 @@ public class CageController : MonoBehaviour {
             return 4;
         }
 
-        //3 animaux identique et un random (3 points pour grifondore) 
+        //3 animaux identique et un random (3 points pour Gryffondor) 
         if (animalInCombo1.Count == 3 || animalInCombo2.Count == 3)
         {
             return 3;
@@ -232,5 +236,17 @@ public class CageController : MonoBehaviour {
         return -1;
     }
 
+    public void startCoolDown()
+    {
+        GameObject monCoolDown = (GameObject)Instantiate(CageCoolDown, transform.position, Quaternion.identity);
+        CoolDownController leCoolDownController = monCoolDown.GetComponent<CoolDownController>();
+        leCoolDownController.laRotation = gameObject.transform.rotation;
+        leCoolDownController.laCouleur = couleurCage;
+        Destroy(gameObject);
+    }
 
+    public void setRond(GameObject  r)
+    {
+        monRond = r;
+    }
 }

@@ -7,8 +7,9 @@ public class Pig : A_Herbivore {
 	void Start () {
 
         intialiseEntry("Pig");
-	
-	}
+        setHearthGameObject();
+
+    }
 	
 	// Update is called once per frame
 	void Update () {

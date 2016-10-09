@@ -1,21 +1,43 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public class GameManager : MonoBehaviour
 {
 
     public static GameManager instance = null;              //Static instance of GameManager which allows it to be accessed by any other script.
 
+    public List<int> couleurCageSpawner;
+    public List<GameObject> listeCage;
+
+    [SerializeField]
+    GameObject rondASpawner;
+
     //Tableau des spawner
     [SerializeField] GameObject[] allSpawner;
 
-    public GameObject Hud;
+    [SerializeField]
+    GameObject[] GoduHands;
+
+    [SerializeField]
+    GameObject FeedbackScore;
+
+    [SerializeField]
+    GameObject FeedbackAmour;
+
+    [SerializeField]
+    GameObject Hud;
+
+    [SerializeField]
+    GameObject player;
 
     //L'amour de dieu
-    public float playerLife;
+    public float playerLife = 100;
 
     //Score du joueur
-    public int playerScore;
+    public int playerScore = 0;
+    float Timer = 0;
+    public int difficulte = 1;
 
 
     //Vriable qui permet de savoir dans quel spawn le joueur est. -1 = Aucun, 0 = Mauve, 1 = Orange, 2 = Vert.
@@ -39,6 +61,48 @@ public class GameManager : MonoBehaviour
 
         //Sets this to not be destroyed when reloading scene
         DontDestroyOnLoad(gameObject);
+
+        int compteur = 0;
+
+        while (couleurCageSpawner.Count >= 1)
+        {
+            int randomIndexCouleur = Random.Range(0, couleurCageSpawner.Count);
+
+            listeCage[compteur].GetComponent<CageController>().couleurCage = couleurCageSpawner[randomIndexCouleur];
+            listeCage[compteur].GetComponent<AuraCageSpawner>().SetAura();
+
+            GameObject temp = Instantiate(rondASpawner, listeCage[compteur].transform.position + new Vector3(-0.49f, 0.49f, 0), Quaternion.identity) as GameObject;
+            temp.GetComponent<rondCage>().setRond(couleurCageSpawner[randomIndexCouleur]);
+            temp.transform.parent = listeCage[compteur].transform;
+            listeCage[compteur].GetComponent<CageController>().setRond(temp);
+
+            couleurCageSpawner.RemoveAt(randomIndexCouleur);
+
+            compteur++;
+        }
+    }
+
+    void Start ()
+    {
+        
+    }
+
+    void Update()
+    {
+        Timer += Time.deltaTime;
+
+        if(Timer >= 0 && Timer < 59)
+        {
+            difficulte = 1;
+        }
+        else if ((Timer >= 60 && Timer < 119))
+        {
+            difficulte = 2;
+        }
+        else
+        {
+            difficulte = 3;
+        }
     }
 
     //Fonction appler par le personnage quand il ramasse un animal
@@ -78,8 +142,12 @@ public class GameManager : MonoBehaviour
 
     public void damageToHud(float damage)
     {
+        //lose life
         playerLife -= damage;
         Hud.GetComponent<HudManager>().HealthBar.GetComponent<HealthBar>().loseAmourDeDieu(damage);
+        GoduHands[0].GetComponent<Animator>().SetBool("play", true);//feedback god
+        GameObject temp = Instantiate(FeedbackAmour, player.transform.position + new Vector3(0, 0.25f, 0), Quaternion.identity) as GameObject;
+        temp.GetComponent<FbScore>().setTextAmour(damage);
     }
 
     //Quand le joueur entre dans le trigger box du spawn, le spawn appel cette fonction pour setter son spawn comme spawn actif
@@ -91,6 +159,22 @@ public class GameManager : MonoBehaviour
     public void deSetSpawnActive()
     {
         spawnActif = -1;
+    }
+
+    public void addScore(int s)
+    {
+        s *= 100;
+        //add life
+        playerLife += 5;
+        Hud.GetComponent<HudManager>().HealthBar.GetComponent<HealthBar>().gainAmourDeDieu(5);
+        GoduHands[1].GetComponent<Animator>().SetBool("play", true);//feedback god
+
+        //add score
+        playerScore += s;
+        Hud.GetComponent<HudManager>().Score.GetComponent<Score>().addScore(s);
+        GameObject temp = Instantiate(FeedbackScore, player.transform.position + new Vector3(0,0.25f,0) , Quaternion.identity) as GameObject;
+        temp.GetComponent<FbScore>().setTextScore(s);
+       
     }
 
 }

@@ -2,11 +2,17 @@
 using System.Collections;
 
 public class PlayerController : MonoBehaviour {
-    public int SpeedPerso = 1;
+    public float SpeedPerso = 1;
     public LayerMask myLayerMask;
     public LayerMask myLayerMaskCage;
     public LayerMask myLayerMaskEntrepot;
+    public LayerMask myLayerMaskEntree;
+    public LayerMask myLayerMaskWall;
     public GameObject cageVictoire;
+    public GameObject PositionStorage;
+    public GameObject ArrowRotator;
+    public GameObject ArrowSprite;
+    
 
     bool facingRight = true;
     GameObject objetPogner = null;
@@ -15,12 +21,16 @@ public class PlayerController : MonoBehaviour {
     int prochainScore = 0;
 
     // Use this for initialization
+
     void Start () {
         monAnimator = GetComponent<Animator>();
 	}
 	
 	// Update is called once per frame
 	void Update () {
+        Quaternion rotation = Quaternion.LookRotation (PositionStorage.transform.position - ArrowRotator.transform.position, ArrowRotator.transform.TransformDirection(Vector3.up));
+        ArrowRotator.transform.rotation = new Quaternion(0, 0, rotation.z, rotation.w);
+
         if (objetPogner != null)
         {
             objetPogner.transform.position = new Vector3(transform.position.x, transform.position.y + 0.2f, 0);
@@ -43,18 +53,17 @@ public class PlayerController : MonoBehaviour {
 
             if (facingRight)
             {
-                positionCircleCast = 0.3f;
+                positionCircleCast = 0.2f;
             }
             else
             {
-                positionCircleCast = -0.3f;
+                positionCircleCast = -0.2f;
             }
 
             Vector2 originCircleCast = new Vector2(transform.position.x + positionCircleCast, transform.position.y);
 
             if (objetPogner != null)
             {
-                Debug.Log(Input.GetAxis("Vertical"));
                 if (Input.GetAxis("Vertical") > 0.4f)
                 {
                     positionCircleCast = 0.4f;
@@ -69,7 +78,7 @@ public class PlayerController : MonoBehaviour {
                 if (objetPogner.tag == "Cage") //DEPOSE ENTREPOT
                 {
 
-                    RaycastHit2D hit = Physics2D.CircleCast(originCircleCast, 0.05f, Vector2.right, 0F, myLayerMaskEntrepot);
+                    RaycastHit2D hit = Physics2D.CircleCast(originCircleCast, 0.1f, Vector2.right, 0F, myLayerMaskEntrepot);
 
                     if (hit.collider != null)
                     {
@@ -78,24 +87,35 @@ public class PlayerController : MonoBehaviour {
                 }
                 else
                 {
-                    RaycastHit2D hit = Physics2D.CircleCast(originCircleCast, 0.0005f, Vector2.right, 0F, myLayerMaskCage);
+                    RaycastHit2D hit = Physics2D.CircleCast(originCircleCast, 0.1f, Vector2.right, 0F, myLayerMaskCage);
+                    RaycastHit2D hitEntree = Physics2D.CircleCast(originCircleCast, 0.1f, Vector2.right, 0F, myLayerMaskEntree);
+
+                    Debug.Log(hitEntree.collider);
 
                     if (hit.collider != null) //DEPOSE DANS UNE CAGE
                     {
                         if (hit.collider.gameObject.GetComponent<CageController>().couleurCage == objetPogner.GetComponent<Animal>().getColor())
                         {
-                            DeposeCage(hit.collider.gameObject, originCircleCast);
+                            if(hit.collider.gameObject.GetComponent<CageController>().getNbrAnimalInCage() < 4)
+                            {
+                                DeposeCage(hit.collider.gameObject, originCircleCast);
+                            }
+                            
                         }
                     }
-                    else //DEPOSE A TERRE
+                    else if (hitEntree.collider == null)
                     {
                         DeposeBateau(originCircleCast);
                     }
+                    /*else //DEPOSE A TERRE
+                    {
+                        DeposeBateau(originCircleCast);
+                    }*/
                 }
             }
             else
             {
-                RaycastHit2D hit = Physics2D.CircleCast(originCircleCast, 0.05f, Vector2.right, 0F, myLayerMask);
+                RaycastHit2D hit = Physics2D.CircleCast(originCircleCast, 0.1f, Vector2.right, 0F, myLayerMask);
 
                 if (hit.collider != null)// Prendre Objet
                 {
@@ -116,11 +136,11 @@ public class PlayerController : MonoBehaviour {
     void FixedUpdate()
     {
 
-        float horizontalAxis = Input.GetAxisRaw("Horizontal");
-        float verticalAxis = Input.GetAxisRaw("Vertical");
+        float horizontalAxis = Input.GetAxis("Horizontal");
+        float verticalAxis = Input.GetAxis("Vertical");
 
         Vector3 vectorDirection = new Vector3(horizontalAxis, verticalAxis, 0);
-        vectorDirection = vectorDirection.normalized;
+        //vectorDirection = vectorDirection.normalized;
 
         GetComponent<Rigidbody2D>().velocity = vectorDirection * SpeedPerso;
 
@@ -157,7 +177,7 @@ public class PlayerController : MonoBehaviour {
     {
         if (objetPogner.GetComponent<Animal>().getZone() == 2)
         {
-            RaycastHit2D hitCage = Physics2D.CircleCast(originCircleCast, 0.05f, Vector2.right, 0F, myLayerMaskCage);
+            RaycastHit2D hitCage = Physics2D.CircleCast(originCircleCast, 0.1f, Vector2.right, 0F, myLayerMaskCage);
 
             hitCage.collider.gameObject.GetComponent<CageController>().animalExitCage(objetPogner);
         }
@@ -191,17 +211,22 @@ public class PlayerController : MonoBehaviour {
         objetPogner.GetComponent<Animal>().setgrabed(false);
 
 
-        objetPogner.transform.position = originCircleCast;
+        objetPogner.transform.position = cage.transform.position;
         objetPogner.GetComponent<BoxCollider2D>().enabled = true;
         objetPogner.transform.parent = null;
 
-        if (cage.GetComponent<CageController>().setAnimalInCage(objetPogner))
+        //DERNIER ANIMAL
+        if (cage.GetComponent<CageController>().setAnimalInCage(objetPogner))//Quand on full une cage avec le dernier animal
         {
             objetPogner = Instantiate(cageVictoire);
             objetPogner.transform.parent = transform;
             objetPogner.transform.position = new Vector3(transform.position.x, transform.position.y + 0.2f, 0);
             monAnimator.SetTrigger("Porte");
             prochainScore = cage.GetComponent<CageController>().calculateScore();
+            ArrowSprite.GetComponent<SpriteRenderer>().enabled = true;
+
+            StartCoroutine(CoolDown(cage));
+            
         }
         else
         {
@@ -217,15 +242,25 @@ public class PlayerController : MonoBehaviour {
         objetPogner.GetComponent<BoxCollider2D>().enabled = true;
         objetPogner.transform.parent = null;
 
+        GameManager.instance.addScore(prochainScore);
+
         //AjouterScore
         Destroy(objetPogner);
         objetPogner = null;
+
+        ArrowSprite.GetComponent<SpriteRenderer>().enabled = false;
     }
 
 
     void OnDrawGizmos()
     {
         Gizmos.color = Color.green;
-        Gizmos.DrawWireSphere(new Vector3(transform.position.x + 0.25f, transform.position.y, transform.position.z), 0.05f);
+        Gizmos.DrawWireSphere(new Vector3(transform.position.x + 0.20f, transform.position.y, transform.position.z), 0.1f);
+    }
+
+    IEnumerator CoolDown(GameObject cage)
+    {
+        yield return new WaitForSeconds(0.1f);
+        cage.GetComponent<CageController>().startCoolDown();
     }
 }

@@ -7,8 +7,9 @@ public class Turtle : A_Herbivore {
 	void Start () {
 
         intialiseEntry("Turtle");
+        setHearthGameObject();
 
-	}
+    }
 	
 	// Update is called once per frame
 	void Update () {

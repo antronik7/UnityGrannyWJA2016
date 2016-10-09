@@ -4,7 +4,7 @@ using System.Collections;
 public class FileAttente : MonoBehaviour {
 
     int animalCount = 0;
-    [SerializeField] int maxNbrAnimals = 9;
+    [SerializeField] int maxNbrAnimals = 19;
     [SerializeField] int idSpawn;
     public float damage;
 
@@ -73,7 +73,7 @@ public class FileAttente : MonoBehaviour {
         }
     }
 
-    void OnTriggerEnter2D(Collider2D other)
+    void OnTriggerStay2D(Collider2D other)
     {
         if(other.gameObject.tag == "Player")
         {
