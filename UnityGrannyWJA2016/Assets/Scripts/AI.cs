@@ -44,6 +44,13 @@ public class AI : MonoBehaviour {
 	void Update () {
         animalList = boat.GetComponentsInChildren<Animal>();
 
+        if (Mathf.Sign(ancientDirection.x) == -1)
+            thisAnimal.GetComponent<SpriteRenderer>().flipX = true;
+        //thisAnimal.transform.localScale = new Vector2(-1 * Mathf.Abs(transform.localScale.x), transform.localScale.y);
+        if (Mathf.Sign(ancientDirection.x) == 1)
+            thisAnimal.GetComponent<SpriteRenderer>().flipX = false;
+        //thisAnimal.transform.localScale = new Vector2(transform.localScale.x, transform.localScale.y);
+
         if (currentState != (int)states.beingCarried && transform.parent.tag == "Player") {
             transform.parent = player;
             currentState = (int)states.beingCarried;
@@ -127,6 +134,7 @@ public class AI : MonoBehaviour {
 
             case (int)states.beingCarried:
                 moveSpeed = 0;
+                thisAnimal.GetComponent<SpriteRenderer>().flipX = false;
 
                 if (thisAnimal.getZone() == 1 && !thisAnimal.getgrabed()) {
                     currentState = (int)states.wandering;
@@ -180,7 +188,6 @@ public class AI : MonoBehaviour {
     void OnTriggerEnter2D(Collider2D other) {
         Debug.Log(other.name);
         if(other.name == "MaCage") {
-            Debug.Log("BLEBLEBLE");
             ancientDirection = new Vector2(Random.Range(-0.5f, 0.5f), Random.Range(-1.0f, 1.0f));
             transform.parent = other.gameObject.transform;
             thisAnimal.setZone(2);
