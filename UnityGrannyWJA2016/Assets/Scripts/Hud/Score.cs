@@ -8,7 +8,7 @@ public class Score : MonoBehaviour {
 
     int current;
     int objectif;
-    int jump = 2;
+    int jump = 1;
 
 	// Use this for initialization
 	void Start () {
