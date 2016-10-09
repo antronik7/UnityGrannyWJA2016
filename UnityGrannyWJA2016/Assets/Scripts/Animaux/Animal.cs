@@ -44,8 +44,10 @@ public abstract class Animal : MonoBehaviour {
             gameObject.AddComponent<AI>();
             gameObject.GetComponent<ComportementSpawn>().enabled = false;
         }
+        if (g)
+            toggleAnimationWalkOff();
         else
-            toggleAnimatorWalk();
+            toggleAnimationWalkOn();
     }
 
     public void setCouple(bool c)
@@ -74,17 +76,12 @@ public abstract class Animal : MonoBehaviour {
     public int getZone() { return zone; }
     public int getId() { return id;}
 
-    public void toggleAnimatorWalk()
-    {
-        bool temp = gameObject.GetComponent<Animator>().GetBool("walk");
-        if(temp)
-        {
-            gameObject.GetComponent<Animator>().SetBool("walk", false);
-        }
-        else
-        {
-            gameObject.GetComponent<Animator>().SetBool("walk", true);
-        }
+    public void toggleAnimationWalkOn() {
+        gameObject.GetComponent<Animator>().SetBool("walk", true);
+    }
+
+    public void toggleAnimationWalkOff() {
+        gameObject.GetComponent<Animator>().SetBool("walk", false);
     }
 
     public void toggleAnimatorCoupled()

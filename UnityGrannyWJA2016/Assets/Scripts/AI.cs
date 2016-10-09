@@ -44,6 +44,14 @@ public class AI : MonoBehaviour {
 	void Update () {
         animalList = boat.GetComponentsInChildren<Animal>();
 
+        if (Mathf.Sign(ancientDirection.x) == -1)
+            thisAnimal.GetComponent<SpriteRenderer>().flipX = true;
+        if (Mathf.Sign(ancientDirection.x) == 1)
+            thisAnimal.GetComponent<SpriteRenderer>().flipX = false;
+
+        if (thisAnimal.getCouple() == true)
+            wantToEscape = false;
+
         if (currentState != (int)states.beingCarried && transform.parent.tag == "Player") {
             transform.parent = player;
             currentState = (int)states.beingCarried;
@@ -52,7 +60,6 @@ public class AI : MonoBehaviour {
         switch (currentState) {
             case (int)states.inCage:
                 moveSpeed = 0.4f;
-               // Debug.Log(GetDistance(cageDoor.transform.position));
                 if (wantToEscape && !isEscaped) {
                     direction = Seek(cageDoor.transform.position);
                     ancientDirection = direction;
@@ -68,7 +75,7 @@ public class AI : MonoBehaviour {
                     foreach (Animal a in animalList) {
                         if (!a.GetComponent<AI>().isEscaped && a.getId() != thisAnimal.getId() && thisAnimal.getType() == false && a.getType() == true) {
                             float distance = GetDistance(a.transform.position);
-                            if (distance < 2) {
+                            if (distance < 2 && prey == null) {
                                 prey = a.gameObject;
                                 previousState = currentState;
                                 currentState = (int)states.chasing;
@@ -110,6 +117,7 @@ public class AI : MonoBehaviour {
                             thisAnimal.GetComponentInParent<CageController>().animalExitCage(prey);
                         Debug.Log("DESTROY");
                         Destroy(prey.gameObject);
+                        GameManager.instance.damageToHud(3);
                         prey = null;
                     }
                     else if (distancePrey < 2) {
@@ -127,15 +135,12 @@ public class AI : MonoBehaviour {
 
             case (int)states.beingCarried:
                 moveSpeed = 0;
+                thisAnimal.GetComponent<SpriteRenderer>().flipX = false;
 
                 if (thisAnimal.getZone() == 1 && !thisAnimal.getgrabed()) {
                     currentState = (int)states.wandering;
                     transform.parent = boat.transform;
                 } 
-                /*else if(thisAnimal.getZone() == 2 && !thisAnimal.getgrabed()) {
-                    currentState = (int)states.inCage;
-                }
-                */
                 break;
         }
     }
@@ -143,7 +148,6 @@ public class AI : MonoBehaviour {
     Vector2 Wander() {
         direction.x = ancientDirection.x + Random.Range(-0.1f, 0.1f);
         direction.y = ancientDirection.y + Random.Range(-0.1f, 0.1f);
-       // direction.x *= transform.localScale.x;
 
         return Normalize(direction);
     }
@@ -180,7 +184,6 @@ public class AI : MonoBehaviour {
     void OnTriggerEnter2D(Collider2D other) {
         Debug.Log(other.name);
         if(other.name == "MaCage") {
-            Debug.Log("BLEBLEBLE");
             ancientDirection = new Vector2(Random.Range(-0.5f, 0.5f), Random.Range(-1.0f, 1.0f));
             transform.parent = other.gameObject.transform;
             thisAnimal.setZone(2);
@@ -197,6 +200,7 @@ public class AI : MonoBehaviour {
         if (other.name == "MaCage" && !isEscaped) {
             transform.parent = other.gameObject.transform;
             isEscaped = true;
+            wantToEscape = false;
         }
     }
 
@@ -211,9 +215,9 @@ public class AI : MonoBehaviour {
             else if (rand < 5 && (currentState == (int)states.wandering || currentState == (int)states.inCage)) {
                 previousState = currentState;
                 currentState = (int)states.drinking;
-                thisAnimal.toggleAnimatorWalk();
+                thisAnimal.toggleAnimationWalkOff();
                 yield return new WaitForSeconds(DRINK_TIME);
-                thisAnimal.toggleAnimatorWalk();
+                thisAnimal.toggleAnimationWalkOn();
                 currentState = previousState;
             } 
         }

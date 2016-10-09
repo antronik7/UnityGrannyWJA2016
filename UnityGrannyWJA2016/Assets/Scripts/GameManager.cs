@@ -13,13 +13,26 @@ public class GameManager : MonoBehaviour
     //Tableau des spawner
     [SerializeField] GameObject[] allSpawner;
 
-    public GameObject Hud;
+    [SerializeField]
+    GameObject[] GoduHands;
+
+    [SerializeField]
+    GameObject FeedbackScore;
+
+    [SerializeField]
+    GameObject FeedbackAmour;
+
+    [SerializeField]
+    GameObject Hud;
+
+    [SerializeField]
+    GameObject player;
 
     //L'amour de dieu
-    public float playerLife;
+    public float playerLife = 100;
 
     //Score du joueur
-    public int playerScore;
+    public int playerScore = 0;
 
 
     //Vriable qui permet de savoir dans quel spawn le joueur est. -1 = Aucun, 0 = Mauve, 1 = Orange, 2 = Vert.
@@ -100,8 +113,12 @@ public class GameManager : MonoBehaviour
 
     public void damageToHud(float damage)
     {
+        //lose life
         playerLife -= damage;
         Hud.GetComponent<HudManager>().HealthBar.GetComponent<HealthBar>().loseAmourDeDieu(damage);
+        GoduHands[0].GetComponent<Animator>().SetBool("play", true);//feedback god
+        GameObject temp = Instantiate(FeedbackAmour, player.transform.position + new Vector3(0, 0.25f, 0), Quaternion.identity) as GameObject;
+        temp.GetComponent<FbScore>().setTextAmour(damage);
     }
 
     //Quand le joueur entre dans le trigger box du spawn, le spawn appel cette fonction pour setter son spawn comme spawn actif
@@ -113,6 +130,22 @@ public class GameManager : MonoBehaviour
     public void deSetSpawnActive()
     {
         spawnActif = -1;
+    }
+
+    public void addScore(int s)
+    {
+        s *= 100;
+        //add life
+        playerLife += 5;
+        Hud.GetComponent<HudManager>().HealthBar.GetComponent<HealthBar>().gainAmourDeDieu(5);
+        GoduHands[1].GetComponent<Animator>().SetBool("play", true);//feedback god
+
+        //add score
+        playerScore += s;
+        Hud.GetComponent<HudManager>().Score.GetComponent<Score>().addScore(s);
+        GameObject temp = Instantiate(FeedbackScore, player.transform.position + new Vector3(0,0.25f,0) , Quaternion.identity) as GameObject;
+        temp.GetComponent<FbScore>().setTextScore(s);
+       
     }
 
 }
