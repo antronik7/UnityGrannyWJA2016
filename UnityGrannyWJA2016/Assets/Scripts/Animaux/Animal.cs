@@ -49,6 +49,7 @@ public abstract class Animal : MonoBehaviour {
     public void setCouple(bool c)
     {
         couple = c;
+        toggleAnimatorCoupled();
 
         if(c)
         {
@@ -70,4 +71,30 @@ public abstract class Animal : MonoBehaviour {
     public bool getgrabed() { return grabed; }
     public int getZone() { return zone; }
     public int getId() { return id;}
+
+    public void toggleAnimatorWalk()
+    {
+        bool temp = gameObject.GetComponent<Animator>().GetBool("walk");
+        if(temp)
+        {
+            gameObject.GetComponent<Animator>().SetBool("walk", false);
+        }
+        else
+        {
+            gameObject.GetComponent<Animator>().SetBool("walk", true);
+        }
+    }
+
+    public void toggleAnimatorCoupled()
+    {
+        bool temp = gameObject.GetComponent<Animator>().GetBool("coupled");
+        if (temp)
+        {
+            gameObject.GetComponent<Animator>().SetBool("coupled", false);
+        }
+        else
+        {
+            gameObject.GetComponent<Animator>().SetBool("coupled", true);
+        }
+    }
 }
