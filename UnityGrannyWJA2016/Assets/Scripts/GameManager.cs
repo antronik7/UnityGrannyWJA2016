@@ -10,6 +10,9 @@ public class GameManager : MonoBehaviour
     public List<int> couleurCageSpawner;
     public List<GameObject> listeCage;
 
+    [SerializeField]
+    GameObject rondASpawner;
+
     //Tableau des spawner
     [SerializeField] GameObject[] allSpawner;
 
@@ -65,6 +68,12 @@ public class GameManager : MonoBehaviour
 
             listeCage[compteur].GetComponent<CageController>().couleurCage = couleurCageSpawner[randomIndexCouleur];
             listeCage[compteur].GetComponent<AuraCageSpawner>().SetAura();
+
+            GameObject temp = Instantiate(rondASpawner, listeCage[compteur].transform.position + new Vector3(-0.49f, 0.49f, 0), Quaternion.identity) as GameObject;
+            temp.GetComponent<rondCage>().setRond(couleurCageSpawner[randomIndexCouleur]);
+            temp.transform.parent = listeCage[compteur].transform;
+            listeCage[compteur].GetComponent<CageController>().setRond(temp);
+
             couleurCageSpawner.RemoveAt(randomIndexCouleur);
 
             compteur++;

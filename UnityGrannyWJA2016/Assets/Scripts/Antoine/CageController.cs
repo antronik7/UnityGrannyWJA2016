@@ -8,9 +8,10 @@ public class CageController : MonoBehaviour {
     public int couleurCage;
 
     [SerializeField] List<GameObject> animalNotInCombo = new List<GameObject>();
-
     [SerializeField] List<GameObject> animalInCombo1 = new List<GameObject>();
     [SerializeField] List<GameObject> animalInCombo2 = new List<GameObject>();
+
+    GameObject monRond;
 
     GameObject[] food;
 
@@ -41,6 +42,7 @@ public class CageController : MonoBehaviour {
         }
 
         nbrOfAnimalInCage++;
+        monRond.GetComponent<rondCage>().addAnimal();
 
         return cageComplet();
     }
@@ -199,6 +201,7 @@ public class CageController : MonoBehaviour {
         }
 
         nbrOfAnimalInCage--;
+        monRond.GetComponent<rondCage>().removeAnimal();
 
     }
 
@@ -240,5 +243,10 @@ public class CageController : MonoBehaviour {
         leCoolDownController.laRotation = gameObject.transform.rotation;
         leCoolDownController.laCouleur = couleurCage;
         Destroy(gameObject);
+    }
+
+    public void setRond(GameObject  r)
+    {
+        monRond = r;
     }
 }

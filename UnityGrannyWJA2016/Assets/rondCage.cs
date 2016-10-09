@@ -47,7 +47,7 @@ public class rondCage : MonoBehaviour {
     {
         current--;
         nbAnimaux.text = current.ToString();
-        if (current == 3)
+        if (current < 4)
         {
             nbAnimaux.color = new Color(69, 40, 60);
             nbAnimauxMax.color = new Color(69, 40, 60);
