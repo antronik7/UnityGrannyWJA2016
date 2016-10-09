@@ -7,6 +7,7 @@ public class Mouton : A_Herbivore {
 	void Start () {
 
         intialiseEntry("Sheep");
+        setHearthGameObject();
 
     }
 	

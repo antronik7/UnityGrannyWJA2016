@@ -51,7 +51,7 @@ public class TextFile : MonoBehaviour {
 
     public void incrementAnimaux()
     {
-        if (nbAnimaux < 100)
+        if (nbAnimaux < 20)
         {
             nbAnimaux++;
         }

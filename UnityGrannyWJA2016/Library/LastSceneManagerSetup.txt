@@ -1,4 +1,8 @@
 sceneSetups:
+<<<<<<< HEAD
 - path: Assets/Scenes/Antoine/Fin.unity
+=======
+- path: Assets/Scenes/Domo/DomoTestDebug.unity
+>>>>>>> ba298b7266726444fa6544dccbcd7ee0ee4344ff
   isLoaded: 1
   isActive: 1
