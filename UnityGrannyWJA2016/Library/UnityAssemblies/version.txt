@@ -1,6 +1,13 @@
-5.4.1f1:2.2.0.0
+5.4.1f1:2.3.0.0
 StandaloneWindows
+<<<<<<< HEAD
 C:/Program Files/Unity/Editor/Data/Managed/UnityEngine.dll
 C:/Program Files/Unity/Editor/Data/UnityExtensions/Unity/GUISystem/UnityEngine.UI.dll
 C:/Program Files/Unity/Editor/Data/UnityExtensions/Unity/Networking/UnityEngine.Networking.dll
 C:/Program Files/Unity/Editor/Data/Managed/UnityEditor.dll
+=======
+D:/Software/Unity/Editor/Data/Managed/UnityEngine.dll
+D:/Software/Unity/Editor/Data/UnityExtensions/Unity/GUISystem/UnityEngine.UI.dll
+D:/Software/Unity/Editor/Data/UnityExtensions/Unity/Networking/UnityEngine.Networking.dll
+D:/Software/Unity/Editor/Data/Managed/UnityEditor.dll
+>>>>>>> 0802f8112337a5804c4f746f5f8db91e79ce1189

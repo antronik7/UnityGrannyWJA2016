@@ -55,6 +55,8 @@ public class spawner : MonoBehaviour {
 
             file.GetComponent<FileAttente>().spawnAnimal(animalSpawner);
             GameManager.instance.addAnimalInFileHud(typeOfSpawner);
+
+            animalSpawner.GetComponent<SpriteRenderer>().flipX = true;
      
 
             setNewTimerToSpawn(minTimeBeforeSpawn, maxTimeBeforeSpawn);
