@@ -19,7 +19,7 @@ public class ComportementSpawn : MonoBehaviour {
 	void Update () {
         if (isMoving)
         {
-            transform.position = Vector2.MoveTowards(transform.position, seekPosition, 3f * Time.deltaTime);
+            transform.position = Vector2.MoveTowards(transform.position, seekPosition, 5f * Time.deltaTime);
         }
         if(transform.position.x == seekPosition.x && transform.position.y == seekPosition.y)
         {
