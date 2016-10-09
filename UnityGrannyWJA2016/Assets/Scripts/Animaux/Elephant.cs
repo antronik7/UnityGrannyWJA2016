@@ -7,6 +7,7 @@ public class Elephant : A_Herbivore {
 	void Start () {
 
         intialiseEntry("Elephant");
+        setHearthGameObject();
 
     }
 	

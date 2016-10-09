@@ -7,6 +7,7 @@ public class Shark : A_Carnivore {
 	void Start () {
 
         intialiseEntry("Shark");
+        setHearthGameObject();
 
     }
 

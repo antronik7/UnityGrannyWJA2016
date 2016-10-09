@@ -7,7 +7,7 @@ public class Crocodile : A_Carnivore {
 	void Start () {
 
         intialiseEntry("Crocodile");
-        setCouple(true);
+        setHearthGameObject();
 
     }
 	
