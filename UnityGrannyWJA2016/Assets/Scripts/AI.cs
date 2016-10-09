@@ -182,7 +182,6 @@ public class AI : MonoBehaviour {
     }
 
     void OnTriggerEnter2D(Collider2D other) {
-        Debug.Log(other.name);
         if(other.name == "MaCage") {
             ancientDirection = new Vector2(Random.Range(-0.5f, 0.5f), Random.Range(-1.0f, 1.0f));
             transform.parent = other.gameObject.transform;
