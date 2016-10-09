@@ -43,11 +43,11 @@ public class PlayerController : MonoBehaviour {
 
             if (facingRight)
             {
-                positionCircleCast = 0.3f;
+                positionCircleCast = 0.25f;
             }
             else
             {
-                positionCircleCast = -0.3f;
+                positionCircleCast = -0.25f;
             }
 
             Vector2 originCircleCast = new Vector2(transform.position.x + positionCircleCast, transform.position.y);
@@ -56,7 +56,7 @@ public class PlayerController : MonoBehaviour {
             {
                 if(objetPogner.tag == "Cage") //DEPOSE ENTREPOT
                 {
-                    RaycastHit2D hit = Physics2D.CircleCast(originCircleCast, 0.0005f, Vector2.right, 0F, myLayerMaskEntrepot);
+                    RaycastHit2D hit = Physics2D.CircleCast(originCircleCast, 0.05f, Vector2.right, 0F, myLayerMaskEntrepot);
 
                     if (hit.collider != null)
                     {
@@ -82,7 +82,7 @@ public class PlayerController : MonoBehaviour {
             }
             else
             {
-                RaycastHit2D hit = Physics2D.CircleCast(originCircleCast, 0.0005f, Vector2.right, 0F, myLayerMask);
+                RaycastHit2D hit = Physics2D.CircleCast(originCircleCast, 0.05f, Vector2.right, 0F, myLayerMask);
 
                 if (hit.collider != null)// Prendre Objet
                 {
@@ -143,7 +143,7 @@ public class PlayerController : MonoBehaviour {
     {
         if (objetPogner.GetComponent<Animal>().getZone() == 2)
         {
-            RaycastHit2D hitCage = Physics2D.CircleCast(originCircleCast, 0.0005f, Vector2.right, 0F, myLayerMaskCage);
+            RaycastHit2D hitCage = Physics2D.CircleCast(originCircleCast, 0.05f, Vector2.right, 0F, myLayerMaskCage);
 
             hitCage.collider.gameObject.GetComponent<CageController>().animalExitCage(objetPogner);
         }
@@ -206,5 +206,12 @@ public class PlayerController : MonoBehaviour {
         //AjouterScore
         Destroy(objetPogner);
         objetPogner = null;
+    }
+
+
+    void OnDrawGizmos()
+    {
+        Gizmos.color = Color.green;
+        Gizmos.DrawWireSphere(new Vector3(transform.position.x + 0.25f, transform.position.y, transform.position.z), 0.05f);
     }
 }
