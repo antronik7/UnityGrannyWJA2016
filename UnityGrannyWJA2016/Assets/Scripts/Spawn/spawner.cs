@@ -75,6 +75,7 @@ public class spawner : MonoBehaviour {
         }
         else
         {
+            Debug.Log(GameManager.instance.difficulte);
             timeBeforeSpwan = Random.Range(min - GameManager.instance.difficulte, max - GameManager.instance.difficulte);
         }
        

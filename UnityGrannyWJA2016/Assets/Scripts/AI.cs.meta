@@ -1,10 +1,13 @@
 fileFormatVersion: 2
 guid: 7a6a811cd3454a647aa4e0b56ac4352f
-timeCreated: 1475878524
+timeCreated: 1476027569
 licenseType: Free
 MonoImporter:
   serializedVersion: 2
-  defaultReferences: []
+  defaultReferences:
+  - cageDoor: {instanceID: 0}
+  - prey: {instanceID: 0}
+  - boucane: {fileID: 1000011084105562, guid: 0bfdac77534e8f44d9fdc6b240b1913c, type: 2}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 

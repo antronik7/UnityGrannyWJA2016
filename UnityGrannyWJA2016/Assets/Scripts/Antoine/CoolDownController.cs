@@ -35,6 +35,7 @@ public class CoolDownController : MonoBehaviour {
         {
             //spaw la cage
             GameObject maCage = Instantiate(Cage, transform.position, laRotation) as GameObject;
+            maCage.name = "MaCage";
             maCage.transform.parent = GameObject.Find("Bateau").transform;
             maCage.transform.rotation = laRotation;
             maCage.GetComponent<CageController>().couleurCage = laCouleur;
