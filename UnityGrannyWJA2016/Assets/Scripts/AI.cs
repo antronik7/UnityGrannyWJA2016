@@ -46,10 +46,11 @@ public class AI : MonoBehaviour {
 
         if (Mathf.Sign(ancientDirection.x) == -1)
             thisAnimal.GetComponent<SpriteRenderer>().flipX = true;
-        //thisAnimal.transform.localScale = new Vector2(-1 * Mathf.Abs(transform.localScale.x), transform.localScale.y);
         if (Mathf.Sign(ancientDirection.x) == 1)
             thisAnimal.GetComponent<SpriteRenderer>().flipX = false;
-        //thisAnimal.transform.localScale = new Vector2(transform.localScale.x, transform.localScale.y);
+
+        if (thisAnimal.getCouple() == true)
+            wantToEscape = false;
 
         if (currentState != (int)states.beingCarried && transform.parent.tag == "Player") {
             transform.parent = player;
@@ -59,7 +60,6 @@ public class AI : MonoBehaviour {
         switch (currentState) {
             case (int)states.inCage:
                 moveSpeed = 0.4f;
-               // Debug.Log(GetDistance(cageDoor.transform.position));
                 if (wantToEscape && !isEscaped) {
                     direction = Seek(cageDoor.transform.position);
                     ancientDirection = direction;
@@ -75,7 +75,7 @@ public class AI : MonoBehaviour {
                     foreach (Animal a in animalList) {
                         if (!a.GetComponent<AI>().isEscaped && a.getId() != thisAnimal.getId() && thisAnimal.getType() == false && a.getType() == true) {
                             float distance = GetDistance(a.transform.position);
-                            if (distance < 2) {
+                            if (distance < 2 && prey == null) {
                                 prey = a.gameObject;
                                 previousState = currentState;
                                 currentState = (int)states.chasing;
@@ -140,10 +140,6 @@ public class AI : MonoBehaviour {
                     currentState = (int)states.wandering;
                     transform.parent = boat.transform;
                 } 
-                /*else if(thisAnimal.getZone() == 2 && !thisAnimal.getgrabed()) {
-                    currentState = (int)states.inCage;
-                }
-                */
                 break;
         }
     }
@@ -151,7 +147,6 @@ public class AI : MonoBehaviour {
     Vector2 Wander() {
         direction.x = ancientDirection.x + Random.Range(-0.1f, 0.1f);
         direction.y = ancientDirection.y + Random.Range(-0.1f, 0.1f);
-       // direction.x *= transform.localScale.x;
 
         return Normalize(direction);
     }
@@ -204,6 +199,7 @@ public class AI : MonoBehaviour {
         if (other.name == "MaCage" && !isEscaped) {
             transform.parent = other.gameObject.transform;
             isEscaped = true;
+            wantToEscape = false;
         }
     }
 
@@ -218,9 +214,9 @@ public class AI : MonoBehaviour {
             else if (rand < 5 && (currentState == (int)states.wandering || currentState == (int)states.inCage)) {
                 previousState = currentState;
                 currentState = (int)states.drinking;
-                thisAnimal.toggleAnimatorWalk();
+                thisAnimal.toggleAnimationWalkOff();
                 yield return new WaitForSeconds(DRINK_TIME);
-                thisAnimal.toggleAnimatorWalk();
+                thisAnimal.toggleAnimationWalkOn();
                 currentState = previousState;
             } 
         }

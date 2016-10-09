@@ -10,7 +10,7 @@ public class ComportementSpawn : MonoBehaviour {
     {
         seekPosition = p;
         isMoving = i;
-        GetComponent<Animal>().toggleAnimatorWalk();
+        GetComponent<Animal>().toggleAnimationWalkOn();
     }
 
     public bool getIsMoving(){ return isMoving; }
@@ -24,7 +24,7 @@ public class ComportementSpawn : MonoBehaviour {
         if(transform.position.x == seekPosition.x && transform.position.y == seekPosition.y)
         {
             isMoving = false;
-            GetComponent<Animal>().toggleAnimatorWalk();
+            GetComponent<Animal>().toggleAnimationWalkOff();
         }
     }
 }
