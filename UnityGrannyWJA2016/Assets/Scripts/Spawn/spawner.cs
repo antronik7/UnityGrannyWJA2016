@@ -28,6 +28,8 @@ public class spawner : MonoBehaviour {
 
     [SerializeField] GameObject file;
 
+    int compteur = 3;
+
     // Use this for initialization
     void Start () {
         setNewTimerToSpawn(minTimeBeforeSpawn, maxTimeBeforeSpawn);
@@ -66,11 +68,81 @@ public class spawner : MonoBehaviour {
     //Fonction qui set le temps du timer
     void setNewTimerToSpawn(float min, float max)
     {
-       timeBeforeSpwan = Random.Range(min, max);
+        if(compteur >= 1)
+        {
+            timeBeforeSpwan = 0.2f;
+            compteur--;
+        }
+        else
+        {
+            timeBeforeSpwan = Random.Range(min - GameManager.instance.difficulte, max - GameManager.instance.difficulte);
+        }
+       
     }
 
     float getTimeBeforeSpawn()
     {
         return timeBeforeSpwan;
+    }
+
+    IEnumerator InitialSpawn()
+    {
+        randTemp = Random.Range(0, animals.Length);
+
+        //Instancier l'animal
+        animalSpawner = (GameObject)(Instantiate(animals[randTemp], new Vector3(1000, 1000, 1000), Quaternion.identity));
+
+        //Associer le id a l'animal
+        animalSpawner.GetComponent<Animal>().setId();
+
+        //Associer la couleur a l'animal spawner
+        animalSpawner.GetComponent<Animal>().setColor(typeOfSpawner);
+
+        file.GetComponent<FileAttente>().spawnAnimal(animalSpawner);
+        GameManager.instance.addAnimalInFileHud(typeOfSpawner);
+
+        animalSpawner.GetComponent<SpriteRenderer>().flipX = true;
+
+
+
+        yield return new WaitForSeconds(1f);
+
+
+        randTemp = Random.Range(0, animals.Length);
+
+        //Instancier l'animal
+        animalSpawner = (GameObject)(Instantiate(animals[randTemp], new Vector3(1000, 1000, 1000), Quaternion.identity));
+
+        //Associer le id a l'animal
+        animalSpawner.GetComponent<Animal>().setId();
+
+        //Associer la couleur a l'animal spawner
+        animalSpawner.GetComponent<Animal>().setColor(typeOfSpawner);
+
+        file.GetComponent<FileAttente>().spawnAnimal(animalSpawner);
+        GameManager.instance.addAnimalInFileHud(typeOfSpawner);
+
+        animalSpawner.GetComponent<SpriteRenderer>().flipX = true;
+
+        yield return new WaitForSeconds(1f);
+
+
+        //Instancier l'animal
+        animalSpawner = (GameObject)(Instantiate(animals[randTemp], new Vector3(1000, 1000, 1000), Quaternion.identity));
+
+        //Associer le id a l'animal
+        animalSpawner.GetComponent<Animal>().setId();
+
+        //Associer la couleur a l'animal spawner
+        animalSpawner.GetComponent<Animal>().setColor(typeOfSpawner);
+
+        file.GetComponent<FileAttente>().spawnAnimal(animalSpawner);
+        GameManager.instance.addAnimalInFileHud(typeOfSpawner);
+
+        animalSpawner.GetComponent<SpriteRenderer>().flipX = true;
+
+        setNewTimerToSpawn(minTimeBeforeSpawn, maxTimeBeforeSpawn);
+
+        file.GetComponent<FileAttente>().setId(typeOfSpawner);
     }
 }
