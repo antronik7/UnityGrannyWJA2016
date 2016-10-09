@@ -7,6 +7,10 @@ public class CoolDownController : MonoBehaviour {
     public float CoolDownTime;
     public GameObject monText;
     public GameObject monCircle;
+    public GameObject Cage;
+
+    public Transform laRotation;
+    public int laCouleur;
 
     float TimeCooldown;
 
@@ -26,6 +30,11 @@ public class CoolDownController : MonoBehaviour {
 
         if(TimeCooldown <= 0)
         {
+            GameObject maCage = Instantiate(Cage, laRotation.position, Quaternion.identity) as GameObject;
+            maCage.transform.rotation = laRotation.transform.rotation;
+            maCage.GetComponent<CageController>().couleurCage = laCouleur;
+            maCage.GetComponent<AuraCageSpawner>().SetAura();
+
             Destroy(gameObject);
         }
 	}

@@ -6,6 +6,7 @@ public class PlayerController : MonoBehaviour {
     public LayerMask myLayerMask;
     public LayerMask myLayerMaskCage;
     public LayerMask myLayerMaskEntrepot;
+    public LayerMask myLayerMaskEntree;
     public GameObject cageVictoire;
     public GameObject PositionStorage;
     public GameObject ArrowRotator;
@@ -86,18 +87,27 @@ public class PlayerController : MonoBehaviour {
                 else
                 {
                     RaycastHit2D hit = Physics2D.CircleCast(originCircleCast, 0.0005f, Vector2.right, 0F, myLayerMaskCage);
+                    RaycastHit2D hitEntree = Physics2D.CircleCast(originCircleCast, 0.0005f, Vector2.right, 0F, myLayerMaskCage);
 
                     if (hit.collider != null) //DEPOSE DANS UNE CAGE
                     {
                         if (hit.collider.gameObject.GetComponent<CageController>().couleurCage == objetPogner.GetComponent<Animal>().getColor())
                         {
-                            DeposeCage(hit.collider.gameObject, originCircleCast);
+                            if(hit.collider.gameObject.GetComponent<CageController>().getNbrAnimalInCage() < 4)
+                            {
+                                DeposeCage(hit.collider.gameObject, originCircleCast);
+                            }
+                            
                         }
                     }
-                    else //DEPOSE A TERRE
+                    else if (hitEntree.collider == null)
                     {
                         DeposeBateau(originCircleCast);
                     }
+                    /*else //DEPOSE A TERRE
+                    {
+                        DeposeBateau(originCircleCast);
+                    }*/
                 }
             }
             else
@@ -202,6 +212,7 @@ public class PlayerController : MonoBehaviour {
         objetPogner.GetComponent<BoxCollider2D>().enabled = true;
         objetPogner.transform.parent = null;
 
+        //DERNIER ANIMAL
         if (cage.GetComponent<CageController>().setAnimalInCage(objetPogner))
         {
             objetPogner = Instantiate(cageVictoire);
@@ -210,6 +221,8 @@ public class PlayerController : MonoBehaviour {
             monAnimator.SetTrigger("Porte");
             prochainScore = cage.GetComponent<CageController>().calculateScore();
             ArrowSprite.GetComponent<SpriteRenderer>().enabled = true;
+
+            cage.GetComponent<CageController>().startCoolDown();
         }
         else
         {

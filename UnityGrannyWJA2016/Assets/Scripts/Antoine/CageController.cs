@@ -16,6 +16,8 @@ public class CageController : MonoBehaviour {
 
     [SerializeField] int nbrOfAnimalInCage = 0;
 
+    public GameObject CageCoolDown;
+
     // Use this for initialization
     void Start () {
 	
@@ -231,5 +233,10 @@ public class CageController : MonoBehaviour {
         return -1;
     }
 
-
+    public void startCoolDown()
+    {
+        GameObject monCoolDown = Instantiate(CageCoolDown, transform.position, Quaternion.identity) as GameObject;
+        monCoolDown.GetComponent<CoolDownController>().laRotation = transform;
+        monCoolDown.GetComponent<CoolDownController>().laCouleur = couleurCage;
+    }
 }
