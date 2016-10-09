@@ -23,6 +23,8 @@ public class AI : MonoBehaviour {
     private Vector2 ancientDirection;
     [SerializeField] private Vector2 direction;
 
+    public AudioClip sonDeLaVictime = null;
+
 	void Start () {
         thisAnimal = GetComponent<Animal>();
 
@@ -246,12 +248,51 @@ public class AI : MonoBehaviour {
     }
 
     IEnumerator AnimalEat() {
+
+        //Trouver le son a jouer
+        sonDeLaVictime = prey.GetComponent<Animal>().sonAnimal;
+        if (gameObject.GetComponent<Animal>().sonAnimal != null && sonDeLaVictime != null)
+        {
+            //Faire un random
+            if(Random.Range(0, 2) < 1)
+            {
+                AudioSource.PlayClipAtPoint(gameObject.GetComponent<Animal>().sonAnimal, transform.position, 1);
+            }
+            else
+            {
+                AudioSource.PlayClipAtPoint(sonDeLaVictime, transform.position, 1);
+            }
+            //Faire jouer le son
+        }
+        else
+        {
+            if(gameObject.GetComponent<Animal>().sonAnimal != null)
+            {
+                AudioSource.PlayClipAtPoint(gameObject.GetComponent<Animal>().sonAnimal, transform.position, 1);
+            }
+            else
+            {
+                if(sonDeLaVictime != null)
+                {
+                    AudioSource.PlayClipAtPoint(sonDeLaVictime, transform.position, 1);
+                }
+            }
+        }
+
+
         GameObject instObject = (GameObject)Instantiate(boucane, thisAnimal.transform.position, Quaternion.identity);
         thisAnimal.toggleAnimationWalkOff();
+
+        
+
+        
+
         Destroy(prey);
         prey = null;
 
         yield return new WaitForSeconds(1f);
+
+        
         Destroy(instObject);
         thisAnimal.toggleAnimationWalkOn();
         currentState = previousState;

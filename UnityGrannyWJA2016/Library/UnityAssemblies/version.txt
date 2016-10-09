@@ -1,23 +1,6 @@
 5.4.1f1:2.3.0.0
 StandaloneWindows
-<<<<<<< HEAD
 C:/Program Files/Unity/Editor/Data/Managed/UnityEngine.dll
 C:/Program Files/Unity/Editor/Data/UnityExtensions/Unity/GUISystem/UnityEngine.UI.dll
 C:/Program Files/Unity/Editor/Data/UnityExtensions/Unity/Networking/UnityEngine.Networking.dll
 C:/Program Files/Unity/Editor/Data/Managed/UnityEditor.dll
-=======
-<<<<<<< HEAD
-C:/Program Files/Unity/Editor/Data/Managed/UnityEngine.dll
-C:/Program Files/Unity/Editor/Data/UnityExtensions/Unity/GUISystem/UnityEngine.UI.dll
-C:/Program Files/Unity/Editor/Data/UnityExtensions/Unity/Networking/UnityEngine.Networking.dll
-C:/Program Files/Unity/Editor/Data/Managed/UnityEditor.dll
-C:/Program Files/Unity/Editor/Data\Managed/Mono.Cecil.dll
-C:/Program Files/Unity/Editor/Data/PlaybackEngines/iOSSupport\UnityEditor.iOS.Extensions.Xcode.dll
-C:/Program Files/Unity/Editor/Data/PlaybackEngines/iOSSupport\UnityEditor.iOS.Extensions.Common.dll
-=======
-D:/Software/Unity/Editor/Data/Managed/UnityEngine.dll
-D:/Software/Unity/Editor/Data/UnityExtensions/Unity/GUISystem/UnityEngine.UI.dll
-D:/Software/Unity/Editor/Data/UnityExtensions/Unity/Networking/UnityEngine.Networking.dll
-D:/Software/Unity/Editor/Data/Managed/UnityEditor.dll
->>>>>>> 9e89bd5a5548c8fb9c5302e7b43921605aeaec40
->>>>>>> 3987431fc281c0fba5e9a9d6e23478e150fb46fc
