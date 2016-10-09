@@ -26,6 +26,7 @@ public abstract class Animal : MonoBehaviour {
     [SerializeField] protected int id;
 
     [SerializeField] GameObject coeur;
+    GameObject leCoeur;
 
 
     public void setType(bool t) { type = t; }
@@ -60,16 +61,35 @@ public abstract class Animal : MonoBehaviour {
 
         if(c)
         {
+<<<<<<< HEAD
             //Ajouter le coeur a l'animal
             //coeur.SetActive(true);
+=======
+            //Afficher le coeur
+            leCoeur.SetActive(true);
+>>>>>>> b9c7954f425c5453e4b2ed38253dfbc5db37d0d3
         }
         else
         {
             //Enlever le coueur
+<<<<<<< HEAD
             //coeur.SetActive(false);
+=======
+            leCoeur.SetActive(false);
+>>>>>>> b9c7954f425c5453e4b2ed38253dfbc5db37d0d3
         }
     }
 
+    public void setHearthGameObject()
+    {
+        leCoeur = (GameObject)Instantiate(coeur, transform.position, Quaternion.identity);
+
+        leCoeur.transform.parent = gameObject.transform;
+
+        leCoeur.transform.localPosition = new Vector2(0, 0.13f);
+
+        leCoeur.SetActive(false);
+    }
 
     public bool getType() { return type; }
     public string getName() { return name; }

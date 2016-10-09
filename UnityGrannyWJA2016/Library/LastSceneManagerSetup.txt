@@ -1,4 +1,16 @@
 sceneSetups:
+<<<<<<< HEAD
 - path: Assets/Scenes/Mathieu/MergeFinalMathieu.unity
+=======
+<<<<<<< HEAD
+- path: Assets/Scenes/Christian/maincopy.unity
+=======
+<<<<<<< HEAD
+- path: Assets/Scenes/Antoine/Fin.unity
+=======
+- path: Assets/Scenes/Domo/DomoTestDebug.unity
+>>>>>>> ba298b7266726444fa6544dccbcd7ee0ee4344ff
+>>>>>>> 768b715ea47432d361c2fb5062b95c70e4e615c1
+>>>>>>> b9c7954f425c5453e4b2ed38253dfbc5db37d0d3
   isLoaded: 1
   isActive: 1
