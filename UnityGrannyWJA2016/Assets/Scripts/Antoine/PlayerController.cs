@@ -152,7 +152,7 @@ public class PlayerController : MonoBehaviour {
 
         objetPogner.transform.parent = transform;
         objetPogner.GetComponent<BoxCollider2D>().enabled = false;
-        objetPogner.transform.position = new Vector3(transform.position.x, transform.position.y + 0.2f, 0);
+        objetPogner.transform.position = new Vector3(transform.position.x, transform.position.y + 0.3f, 0);
     }
 
     void DeposeBateau(float positionCircleCast)
