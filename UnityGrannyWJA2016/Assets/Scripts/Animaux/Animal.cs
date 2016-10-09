@@ -67,7 +67,6 @@ public abstract class Animal : MonoBehaviour {
         else
         {
             //Enlever le coueur
-
             leCoeur.SetActive(false);
         }
     }
