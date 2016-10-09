@@ -138,6 +138,8 @@ public class AI : MonoBehaviour {
                 thisAnimal.GetComponent<SpriteRenderer>().flipX = false;
 
                 if (thisAnimal.getZone() == 1 && !thisAnimal.getgrabed()) {
+                    isEscaped = true;
+                    wantToEscape = false;
                     currentState = (int)states.wandering;
                     transform.parent = boat.transform;
                 } 
@@ -174,9 +176,15 @@ public class AI : MonoBehaviour {
     }
 
     void OnCollisionEnter2D(Collision2D other) {
-        if(other.gameObject.name == "MurGauche" || other.gameObject.name == "MurDroite")
+        /*if(other.gameObject.name == "MurGauche" || other.gameObject.name == "MurDroite")
             ancientDirection.x *= -1;
         if(other.gameObject.name == "MurHaut" || other.gameObject.name == "MurBas")
+            ancientDirection.y *= -1;*/
+        BoxCollider2D b = other.gameObject.GetComponent<BoxCollider2D>();
+
+        if (b.size.x > 0.5f || (b.size.y > 0.5f && b.transform.rotation.z == 0))
+            ancientDirection.x *= -1;
+        if (b.size.y > 0.5f || (b.size.x > 0.5f && b.transform.rotation.z == 0))
             ancientDirection.y *= -1;
     }
 
@@ -195,7 +203,7 @@ public class AI : MonoBehaviour {
     }
 
     void OnTriggerExit2D(Collider2D other) {
-        if (other.name == "MaCage" && !isEscaped) {
+        if (other.name == "MaCage") {
             transform.parent = other.gameObject.transform;
             isEscaped = true;
             wantToEscape = false;
