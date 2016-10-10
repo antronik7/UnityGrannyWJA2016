@@ -293,7 +293,7 @@ public class AI : MonoBehaviour {
         yield return new WaitForSeconds(1f);
 
         
-        Destroy(instObject);
+       // Destroy(instObject);
         thisAnimal.toggleAnimationWalkOn();
         currentState = previousState;
     }
