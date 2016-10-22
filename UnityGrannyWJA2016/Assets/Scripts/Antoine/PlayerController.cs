@@ -57,11 +57,11 @@ public class PlayerController : MonoBehaviour {
 
                 if (facingRight)
                 {
-                    positionCircleCast = 0.2f;
+                    positionCircleCast = 0.15f;
                 }
                 else
                 {
-                    positionCircleCast = -0.2f;
+                    positionCircleCast = -0.15f;
                 }
 
                 Vector2 originCircleCast = new Vector2(transform.position.x + positionCircleCast, transform.position.y);
@@ -70,15 +70,15 @@ public class PlayerController : MonoBehaviour {
                 {
                     if (Input.GetAxis("Vertical") > 0.4f)
                     {
-                        positionCircleCast = 0.4f;
+                        positionCircleCast = 0.2f;
                         originCircleCast = new Vector2(transform.position.x, transform.position.y + positionCircleCast);
                     }
                     else if (Input.GetAxis("Vertical") < -0.4f)
                     {
-                        positionCircleCast = -0.3f;
+                        positionCircleCast = -0.2f;
                         originCircleCast = new Vector2(transform.position.x, transform.position.y + positionCircleCast);
                     }
-
+                    
                     if (objetPogner.tag == "Cage") //DEPOSE ENTREPOT
                     {
 
@@ -94,7 +94,6 @@ public class PlayerController : MonoBehaviour {
                         RaycastHit2D hit = Physics2D.CircleCast(originCircleCast, 0.1f, Vector2.right, 0F, myLayerMaskCage);
                         RaycastHit2D hitEntree = Physics2D.CircleCast(originCircleCast, 0.1f, Vector2.right, 0F, myLayerMaskEntree);
 
-                        Debug.Log(hitEntree.collider);
 
                         if (hit.collider != null) //DEPOSE DANS UNE CAGE
                         {
@@ -266,7 +265,7 @@ public class PlayerController : MonoBehaviour {
     void OnDrawGizmos()
     {
         Gizmos.color = Color.green;
-        Gizmos.DrawWireSphere(new Vector3(transform.position.x + 0.20f, transform.position.y, transform.position.z), 0.1f);
+        Gizmos.DrawWireSphere(new Vector3(transform.position.x + 0.15f, transform.position.y, transform.position.z), 0.1f);
     }
 
     IEnumerator CoolDown(GameObject cage)

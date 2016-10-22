@@ -46,6 +46,7 @@ public class GameManager : MonoBehaviour
     Animator gameOverAnimator;
 
     //Vriable qui permet de savoir dans quel spawn le joueur est. -1 = Aucun, 0 = Mauve, 1 = Orange, 2 = Vert.
+    [SerializeField]
     int spawnActif = -1;
 
     //Awake is always called before any Start functions
@@ -89,7 +90,6 @@ public class GameManager : MonoBehaviour
 
     void Start ()
     {
-        Debug.Log("WTF");
         startAnimator.SetBool("play", true);
     }
 
