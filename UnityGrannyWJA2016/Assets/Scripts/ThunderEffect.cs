@@ -37,6 +37,6 @@ public class ThunderEffect : MonoBehaviour {
      	GetComponent<AudioSource>().Play();
          flash = true;
          myCG.alpha = 1;
-        cptFlash = Random.Range(1,10);
+        cptFlash = Random.Range(15,30);
      }
  }
