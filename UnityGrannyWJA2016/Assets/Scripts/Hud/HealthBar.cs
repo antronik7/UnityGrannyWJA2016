@@ -4,40 +4,54 @@ using System.Collections;
 
 public class HealthBar : MonoBehaviour {
 
-    bool amourGain = false;
-    bool amourLoss = false;
-
-    float result = 0;
-    float toChange;
     float waitTime = 0.3f;
+    float difference = 0;
     float current;
+    float pv = 1;
+    float toChange;
+
+    bool asChanged = false;
 
 	// Use this for initialization
-	void Start () {
-	
-	}
+	void Awake () {
+
+        current = pv;
+
+    }
 	
 	// Update is called once per frame
 	void OnGUI () {
 
-        if(amourGain)
+        if (asChanged)
         {
-            current -= toChange / waitTime * Time.deltaTime;
-            gameObject.GetComponent<Image>().fillAmount += toChange / waitTime * Time.deltaTime;
-            if(current <= 0)
+
+            if (current < pv)
             {
-                amourGain = false;
-                gameObject.GetComponent<Image>().fillAmount = result;
+                toChange = difference / waitTime * Time.deltaTime;
+                pv -= toChange;
+                gameObject.GetComponent<Image>().fillAmount -= toChange;
+                if(pv < current)
+                {
+                    pv = current;
+                    gameObject.GetComponent<Image>().fillAmount = current;
+                    asChanged = false;
+                }
             }
-        }
-        if (amourLoss)
-        {
-            current -= toChange / waitTime * Time.deltaTime;
-            gameObject.GetComponent<Image>().fillAmount -= toChange / waitTime * Time.deltaTime;
-            if (current <= 0)
+            else if (current > pv)
             {
-                amourLoss = false;
-                gameObject.GetComponent<Image>().fillAmount = result;
+                toChange = difference / waitTime * Time.deltaTime;
+                pv += toChange;
+                gameObject.GetComponent<Image>().fillAmount += toChange;
+                if (pv > current)
+                {
+                    pv = current;
+                    gameObject.GetComponent<Image>().fillAmount = current;
+                    asChanged = false;
+                }
+            }
+            else
+            {
+                asChanged = false;
             }
         }
 
@@ -45,18 +59,15 @@ public class HealthBar : MonoBehaviour {
 
     public void loseAmourDeDieu(float l)
     {
-        toChange = l/100;
-        current = toChange;
-        amourLoss = true;
-        result = gameObject.GetComponent<Image>().fillAmount - toChange;
+        current -= l/100;
+        difference = pv - current;
+        asChanged = true;
     }
 
     public void gainAmourDeDieu(float l)
     {
-        
-        toChange = l / 100;
-        current = toChange;
-        amourGain = true;
-        result = gameObject.GetComponent<Image>().fillAmount + toChange;
+        current += l/100;
+        difference = (pv - current) * -1;
+        asChanged = true;
     }
 }

@@ -15,6 +15,9 @@ public class rondCage : MonoBehaviour {
     [SerializeField]
     TextMesh nbAnimauxMax;// text du nombre d'animaux que peut contenir la cage
 
+    [SerializeField]
+    Color couleurText;
+
     int current = 0;//le nombre d'animal present dans la cage en ce moment
 
     // Use this for initialization
@@ -47,8 +50,8 @@ public class rondCage : MonoBehaviour {
     {
         current--;
         nbAnimaux.text = current.ToString();
-        nbAnimaux.color = new Color(69/255, 40/255, 60/255);
-        nbAnimauxMax.color = new Color(69/250, 40/250, 60/250);
+        nbAnimaux.color = couleurText;
+        nbAnimauxMax.color = couleurText;
 
     }
 

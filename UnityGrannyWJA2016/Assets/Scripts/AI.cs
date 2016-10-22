@@ -281,6 +281,7 @@ public class AI : MonoBehaviour {
 
 
         GameObject instObject = (GameObject)Instantiate(boucane, thisAnimal.transform.position, Quaternion.identity);
+        instObject.transform.parent = thisAnimal.transform;
         thisAnimal.toggleAnimationWalkOff();
 
         
