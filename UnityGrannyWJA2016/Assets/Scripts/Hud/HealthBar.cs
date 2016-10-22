@@ -48,6 +48,11 @@ public class HealthBar : MonoBehaviour {
                     gameObject.GetComponent<Image>().fillAmount = current;
                     asChanged = false;
                 }
+                if(pv > 1)
+                {
+                    pv = 1;
+                    asChanged = false;
+                }
             }
             else
             {
@@ -67,6 +72,10 @@ public class HealthBar : MonoBehaviour {
     public void gainAmourDeDieu(float l)
     {
         current += l/100;
+        if(current > 1)
+        {
+            current = 1;
+        }
         difference = (pv - current) * -1;
         asChanged = true;
     }
